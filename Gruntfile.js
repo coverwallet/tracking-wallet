@@ -104,7 +104,7 @@ module.exports = function(grunt) {
                     browserifyOptions: {
                         debug: false,
                         plugin: [
-                            ["browserify-derequire"]
+                            ['browserify-derequire']
                         ]
                     }
                 },
@@ -132,6 +132,16 @@ module.exports = function(grunt) {
                     dest: '<%= buildDir %>/gzip/',
                     ext: '.min.js'
                 }]
+            }
+        },
+        connect: {
+            serverTest: {
+                options: {
+                    port: 3001,
+                    hostname: '0.0.0.0',
+                    base: ['build', 'test'],
+                    livereload: true
+                }
             }
         },
         uglify: {
@@ -183,8 +193,8 @@ module.exports = function(grunt) {
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
     grunt.registerTask('build', ['clean', 'jshint', 'browserify:dev', 'replace:dev']);
-    grunt.registerTask('dist', ['clean', 'build', 'karma:unit', 'connect:serverTest', 'browserify:dist', 'replace:' + target, 'uglify:js', 'compress', 'jsdoc']);
-    grunt.registerTask('test', ['karma:unit', 'build', 'connect:serverTest']);
-    grunt.registerTask('serve', ['build', 'connect:serverTest', 'watch']);
+    grunt.registerTask('dist', ['clean', 'build', 'karma:unit', 'browserify:dist', 'replace:' + target, 'uglify:js', 'compress', 'jsdoc']);
+    grunt.registerTask('test', ['karma:unit', 'build']);
+    grunt.registerTask('serve', ['build', 'connect:serverTest',  'watch']);
 
 };
