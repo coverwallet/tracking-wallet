@@ -47,9 +47,6 @@ module.exports = function(grunt) {
                         match: /require/g,
                         replacement: '_dereq_'
                     }, {
-                        match:'trackingClient',
-                        replacement: 'mixpanel'
-                    }, {
                         match:'levelLogger',
                         replacement: '0'
                     }]
@@ -67,9 +64,6 @@ module.exports = function(grunt) {
                         match: /require/g,
                         replacement: '_dereq_'
                     }, {
-                        match:'trackingClient',
-                        replacement: 'mixpanel'
-                    }, {
                         match:'levelLogger',
                         replacement: '1'
                     }]
@@ -86,9 +80,6 @@ module.exports = function(grunt) {
                     patterns: [{
                         match: /require/g,
                         replacement: '_dereq_'
-                    }, {
-                        match:'trackingClient',
-                        replacement: 'mixpanel'
                     }, {
                         match:'levelLogger',
                         replacement: '3'

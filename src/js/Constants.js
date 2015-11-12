@@ -24,15 +24,6 @@ Constants.prefixNameTrakingData = 'data-tw-';
 Constants.nameTrackingEventData = 'data-tw-event';
 
 /**
- * Default client to tracking
- * @name Constants#trackingClient
- * @type String
- * @default 'mixpanel'
- */
-Constants.trackingClient = '@@trackingClient';
-
-
-/**
  * Default level logger
  * values: 0-Error, 1-Warn, 2-Info, 3-debug
  * @name Constants#levelLogger

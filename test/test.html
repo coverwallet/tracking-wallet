@@ -3,7 +3,6 @@
 
     </head>
     <body data-tw-app='test-dev' data-tw-page="testPage" data-tw-section="Home section">
-        <h1>Test</h1>
         <a href="./index.html" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
         <form action="./index.html" method="GET" data-tw-event="submit" data-tw-name="pedirNombre">
             <label for="name">Nombre</label>
@@ -12,7 +11,7 @@
         </form>
         <script type="text/javascript" src="tracking-wallet.js"></script>
         <script type="text/javascript">
-            window.trackingWallet.init('0b9b4c8fd236491c27730460534d83ff');
+            window.trackingWallet.init('mixpanel', '');
 
             document.addEventListener("DOMContentLoaded", function() {
                 alert(mixpanel.get_distinct_id());

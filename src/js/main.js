@@ -166,16 +166,19 @@ module.exports = (function() {
      * Init function
      *
      * @name Main#init
+     * @param {String} nameClient Name of client that use (mixpanel)
      * @param {String} token token authentication
      * @function
      */
-    var init = function(token) {
-        client = TrackingFactory.getTrackingClient(token);
-        var promise = client.init(token);
-        promise.then(_startTracking);
-        promise.catch(function(e) {
-            logger.error('Error to init mixpanel ' + e);
-        });
+    var init = function(nameClient, token) {
+        client = TrackingFactory.getTrackingClient(nameClient);
+        if(client){
+            var promise = client.init(token);
+            promise.then(_startTracking);
+            promise.catch(function(e) {
+                logger.error('Error to init mixpanel ' + e);
+            });
+        }
     };
 
     /**

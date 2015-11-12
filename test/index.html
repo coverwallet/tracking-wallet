@@ -8,7 +8,7 @@
         <a href="./test.html" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
         <script type="text/javascript" src="tracking-wallet.js"></script>
         <script type="text/javascript">
-            trackingWallet.init('0b9b4c8fd236491c27730460534d83ff');
+            trackingWallet.init('mixpanel', '');
 
             document.addEventListener("DOMContentLoaded", function() {
                 alert(mixpanel.get_distinct_id());

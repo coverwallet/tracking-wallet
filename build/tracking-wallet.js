@@ -15361,15 +15361,6 @@ Constants.prefixNameTrakingData = 'data-tw-';
 Constants.nameTrackingEventData = 'data-tw-event';
 
 /**
- * Default client to tracking
- * @name Constants#trackingClient
- * @type String
- * @default 'mixpanel'
- */
-Constants.trackingClient = 'mixpanel';
-
-
-/**
  * Default level logger
  * values: 0-Error, 1-Warn, 2-Info, 3-debug
  * @name Constants#levelLogger
@@ -15673,18 +15664,20 @@ module.exports = (function() {
     /**
      * Init function
      *
-     * @private
      * @name Main#init
+     * @param {String} nameClient Name of client that use (mixpanel)
      * @param {String} token token authentication
      * @function
      */
-    var init = function(token) {
-        client = TrackingFactory.getTrackingClient(token);
-        var promise = client.init(token);
-        promise.then(_startTracking);
-        promise.catch(function(e) {
-            logger.error('Error to init mixpanel ' + e);
-        });
+    var init = function(nameClient, token) {
+        client = TrackingFactory.getTrackingClient(nameClient);
+        if(client){
+            var promise = client.init(token);
+            promise.then(_startTracking);
+            promise.catch(function(e) {
+                logger.error('Error to init mixpanel ' + e);
+            });
+        }
     };
 
     /**
@@ -15760,9 +15753,9 @@ MixpanelClient.prototype._loaded = function(resolve, reject){
 };
 
 /**
- * Private function that is called when client is initialized
+ * Function that track the event with mixpanel
  * @public
- * @name MixpanelClient#_loaded
+ * @name MixpanelClient#track
  * @private
  * @function
  */
@@ -15785,6 +15778,7 @@ module.exports = new MixpanelClient();
 
 var Constants = _dereq_('Constants');
 var mixpanelClient = _dereq_('tracking/MixpanelClient');
+var logger = _dereq_('lib/Logger')('TrackingFactory');
 
 /**
  * @name TrackingFactory
@@ -15796,14 +15790,16 @@ module.exports = (function() {
      * Obtain client for tracking
      * @private
      * @name TrackingFactory#getTrackingClient
+     * @param {String} client Name of client that use (mixpanel)
      * @function
      */
-    var getTrackingClient = function() {
-        switch (Constants.trackingClient) {
+    var getTrackingClient = function(client) {
+        switch (client) {
             case 'mixpanel':
                 return mixpanelClient;
             default:
-
+                logger.error('Client not found');
+                throw new Error('Client not found');
         }
     };
 
@@ -15813,7 +15809,7 @@ module.exports = (function() {
 
 }());
 
-},{"Constants":4,"tracking/MixpanelClient":8}],10:[function(_dereq_,module,exports){
+},{"Constants":4,"lib/Logger":5,"tracking/MixpanelClient":8}],10:[function(_dereq_,module,exports){
 'use strict';
 
 /**
