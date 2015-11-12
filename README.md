@@ -31,7 +31,7 @@ Usage
 <script type="text/javascript" src="<path>/build/tracking-wallet.min.js"></script>
 <script type="text/javascript">
     /**
-        Client posibilities: mixpanel
+        client posibilities: mixpanel
         token: token of your client
     */
     trackingWallet.init(<client>, <token>);
