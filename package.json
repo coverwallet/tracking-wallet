@@ -2,13 +2,13 @@
   "name": "tracking-wallet",
   "version": "0.0.1",
   "dependencies": {
+    "bluebird": "2.10.2",
+    "jquery": "1.11.3"
   },
   "engines": {
     "node": ">=0.10.0"
   },
-  "scripts": {
-    "install": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
-  },
+  "scripts": {},
   "browserify": {
     "transform": [
       "browserify-shim"

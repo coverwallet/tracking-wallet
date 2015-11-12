@@ -2,7 +2,17 @@
     <head>
 
     </head>
-    <body>
+    <body data-tw-app='test-dev' data-tw-page="homePage" data-tw-section="Home section">
+        <h1>Home</h1>
+        <p>Page to test tracking wallet library</p>
+        <a href="./test.html" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
+        <script type="text/javascript" src="tracking-wallet.js"></script>
+        <script type="text/javascript">
+            trackingWallet.init('0b9b4c8fd236491c27730460534d83ff');
 
+            document.addEventListener("DOMContentLoaded", function() {
+                alert(mixpanel.get_distinct_id());
+            });
+        </script>
     </body>
 </html>

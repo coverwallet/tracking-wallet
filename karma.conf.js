@@ -34,6 +34,7 @@ module.exports = function(config) {
 
         browserify: {
             debug: true,
+            paths: ['src/js'],
             transform: ['browserify-shim', 'browserify-istanbul']
         },
 

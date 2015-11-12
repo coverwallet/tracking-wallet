@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 
                 force: true
             },
-            js: ['src/**/*.js', '!src/js/metric/client/MixpanelLib.js'],
+            js: ['src/**/*.js', '!src/js/tracking/Mixpanel.js'],
             testUnit: ['test/unit/**/*.spec.js']
         },
         replace: {
@@ -46,6 +46,12 @@ module.exports = function(grunt) {
                     patterns: [{
                         match: /require/g,
                         replacement: '_dereq_'
+                    }, {
+                        match:'trackingClient',
+                        replacement: 'mixpanel'
+                    }, {
+                        match:'levelLogger',
+                        replacement: '0'
                     }]
                 },
                 files: [{
@@ -55,11 +61,17 @@ module.exports = function(grunt) {
                     dest: '<%= buildDir %>/'
                 }]
             },
-            pre: {
+            staging: {
                 options: {
                     patterns: [{
                         match: /require/g,
                         replacement: '_dereq_'
+                    }, {
+                        match:'trackingClient',
+                        replacement: 'mixpanel'
+                    }, {
+                        match:'levelLogger',
+                        replacement: '1'
                     }]
                 },
                 files: [{
@@ -74,6 +86,12 @@ module.exports = function(grunt) {
                     patterns: [{
                         match: /require/g,
                         replacement: '_dereq_'
+                    }, {
+                        match:'trackingClient',
+                        replacement: 'mixpanel'
+                    }, {
+                        match:'levelLogger',
+                        replacement: '3'
                     }]
                 },
                 files: [{
@@ -90,8 +108,9 @@ module.exports = function(grunt) {
                 options: {
                     browserifyOptions: {
                         debug: true,
+                        paths: ['src/js'],
                         plugin: [
-                            ["browserify-derequire"]
+                            ['browserify-derequire']
                         ]
                     }
                 },
@@ -103,6 +122,7 @@ module.exports = function(grunt) {
                 options: {
                     browserifyOptions: {
                         debug: false,
+                        paths: ['src/js'],
                         plugin: [
                             ['browserify-derequire']
                         ]
@@ -122,13 +142,13 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: '<%= buildDir %>/',
                     expand: true,
-                    src: ['cover-wallet.js'],
+                    src: ['tracking-wallet.js'],
                     dest: '<%= buildDir %>/gzip/',
                     ext: '.js'
                 }, {
                     cwd: '<%= buildDir %>/',
                     expand: true,
-                    src: ['cover-wallet.min.js'],
+                    src: ['tracking-wallet.min.js'],
                     dest: '<%= buildDir %>/gzip/',
                     ext: '.min.js'
                 }]
@@ -151,7 +171,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: {
-                    '<%= buildDir %>/cover-wallet.min.js': ['<%= buildDir %>/cover-wallet.js']
+                    '<%= buildDir %>/tracking-wallet.min.js': ['<%= buildDir %>/tracking-wallet.js']
                 }
             }
         },
@@ -168,7 +188,7 @@ module.exports = function(grunt) {
                 src: ['src/**/*.js', 'test/unit/**/*.spec.js'],
                 options: {
                     destination: '<%= buildDir %>/doc',
-                    configure: 'conf.json',
+                    configure: 'jsdocConf.json',
                     template: 'node_modules/ink-docstrap/template'
                 }
             }
@@ -179,7 +199,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['src/**/*.js'],
-                tasks: ['jshint:js', 'browserify:dev', 'replace:' + target, 'karma:unitWatch']
+                tasks: ['jshint:js', 'browserify:dev', 'replace:' + target/*, 'karma:unitWatch'*/]
             },
             testUnit: {
                 files: ['test/unit/**/*.js'],
@@ -193,7 +213,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
     grunt.registerTask('build', ['clean', 'jshint', 'browserify:dev', 'replace:dev']);
-    grunt.registerTask('dist', ['clean', 'build', 'karma:unit', 'browserify:dist', 'replace:' + target, 'uglify:js', 'compress', 'jsdoc']);
+    grunt.registerTask('dist', ['clean', 'build', 'browserify:dist', 'replace:' + target, 'uglify:js', 'compress', 'jsdoc']);
     grunt.registerTask('test', ['karma:unit', 'build']);
     grunt.registerTask('serve', ['build', 'connect:serverTest',  'watch']);
 

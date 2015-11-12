@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function(config) {
     config.set({
 
@@ -14,7 +15,7 @@ module.exports = function(config) {
         exclude: [],
 
         preprocessors: {
-            
+
             'src/**/*.js': ['browserify'],
 			'test/unit/**/*.js': ['browserify']
         },
@@ -33,11 +34,12 @@ module.exports = function(config) {
 
         browserify: {
             debug: true,
-            transform: ["browserify-shim", "browserify-istanbul"]
+            paths: ['src/js'],
+            transform: ['browserify-shim', 'browserify-istanbul']
         },
 
         plugins: [
-            'karma-phantomjs-launcher', 'karma-jasmine', 
+            'karma-phantomjs-launcher', 'karma-jasmine',
 			'karma-browserify', 'karma-junit-reporter',
 			'karma-coverage', 'karma-chrome-launcher'
         ],

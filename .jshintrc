@@ -32,6 +32,8 @@
         "afterEach": false,
         "spyOn": false,
         "expect": false,
-        "browser": false
+        "browser": false,
+        "Integer": false,
+        "module": false
     }
 }
