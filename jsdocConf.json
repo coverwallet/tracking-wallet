@@ -1,0 +1,25 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+        "systemName": "Tracking Wallet",
+        "footer": "Cover Wallet",
+        "copyright": "© 2015-2016 CoverWallet",
+        "navType": "inline",
+        "theme": "cosmo",
+        "linenums": true,
+        "collapseSymbols": true,
+        "inverseNav": false,
+        "outputSourceFiles": true,
+        "outputSourcePath": false,
+        "highlightTutorialCode": "true",
+        "syntaxTheme": "dark"
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": true,
+        "tags": ["examples"]
+    }
+}
