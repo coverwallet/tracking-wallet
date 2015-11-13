@@ -6,7 +6,7 @@
     "Ra <rareq1987@gmail.com>"
   ],
   "license": "MIT",
-  "main": "build/tracking-wallet.min.js"
+  "main": "build/tracking-wallet.min.js",
   "ignore": [
     "**/.*",
     "node_modules",
