@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Tracking Wallet Source: main.js</title>
+	<title>Tracking Wallet Source: /Users/ra/Workspace/coverwallet/tracking-wallet/src/js/tracking-wallet.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,14 +27,14 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu inline">
-					<li><a href="Dom.html">Dom</a></li><li><a href="Main.html">Main</a></li><li><a href="TrackingFactory.html">TrackingFactory</a></li>
+					<li><a href="Main.html">Main</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu inline">
-					<li><a href="Constants.html">Constants</a></li><li><a href="Logger.html">Logger</a></li><li><a href="MixpanelClient.html">MixpanelClient</a></li>
+					<li><a href="Logger.html">Logger</a></li>
 				</ul>
 			</li>
 			
@@ -51,10 +51,10 @@
 	<div class="col-md-12">
 	
 		<div id="main">
-    		<h1 class="page-title">Source: main.js</h1>
+    		<h1 class="page-title">Source: /Users/ra/Workspace/coverwallet/tracking-wallet/src/js/tracking-wallet.js</h1>
 			
 
-		<h1 class="page-title">Source: main.js</h1>
+		<h1 class="page-title">Source: /Users/ra/Workspace/coverwallet/tracking-wallet/src/js/tracking-wallet.js</h1>
     
 <section>
 	<article>
@@ -64,17 +64,120 @@
  * @name Main
  * @namespace
  */
-module.exports = (function() {
-
-    var TrackingFactory = require('tracking/TrackingFactory');
-    var logger = require('lib/Logger')('Main');
-    var Constants = require('Constants');
-    var $ = require('JQuery');
-    var Dom = require('utils/Dom');
-    var client = null;
+(function(window, $) {
 
     /**
-     * Do click in element
+     * @name Logger
+     * @class
+     */
+    var Logger = function(levelLogger) {
+        this.levelLogger = levelLogger;
+    };
+    /**
+     * Show debug Logger
+     * @public
+     * @name Logger#debug
+     * @function
+     * @param {String} Text to show
+     */
+    Logger.prototype.debug = function(text) {
+        if (this.levelLogger >= 3) {
+            if (window &amp;&amp; window.console &amp;&amp; window.console.debug) {
+                window.console.debug(text);
+            }
+        }
+    };
+
+    /**
+     * Show info Logger
+     * @public
+     * @name Logger#info
+     * @function
+     * @param {String} Text to show
+     */
+    Logger.prototype.info = function(text) {
+        if (this.levelLogger >= 2) {
+            if (window.window &amp;&amp; window.window.console &amp;&amp; window.window.console.info) {
+                window.window.console.info(this.preText + text);
+            }
+        }
+    };
+
+    /**
+     * Show warn Logger
+     * @public
+     * @name Logger#warn
+     * @function
+     * @param {String} Text to show
+     */
+    Logger.prototype.warn = function(text) {
+        if (this.levelLogger >= 1) {
+            if (window.window &amp;&amp; window.window.console &amp;&amp; window.window.console.warn) {
+                window.window.console.warn(this.preText + text);
+            }
+        }
+    };
+
+    /**
+     * Show error Logger
+     * @public
+     * @name Logger#error
+     * @function
+     * @param {String} Text to show
+     */
+    Logger.prototype.error = function(text) {
+        if (this.levelLogger >= 0) {
+            if (window.window &amp;&amp; window.window.console &amp;&amp; window.window.console.error) {
+                window.window.console.error(this.preText + text);
+            }
+        }
+    };
+
+    /**
+     * Generator unique ids
+     */
+    var Generator = function() {};
+
+    Generator.getId = function() {
+        return Math.floor(Math.random() * 26) + Date.now();
+    };
+
+
+    var Constants = {
+        prefixNameTrakingData: 'data-tw-',
+        nameTrackingEventData: 'data-tw-event',
+        preTextLogger: 'TR-W',
+        pageViewEvent: 'Page view',
+        clickEvent: 'click',
+        submitEvent: 'submit',
+        defaultTimeout: 300
+    };
+    var logger = null;
+
+    /**
+     * Return object with all tracking properties of the param element
+     * @public
+     * @name Main#_getTrackDataOfElem
+     * @function
+     * @param {Object} Object with all tracking properties
+     */
+    var _getTrackDataOfElem = function(el) {
+        var attributes = el[0].attributes;
+        var length, i, attr = null,
+            attrObj = {};
+        for (i = 0, length = attributes.length; i &lt; length; i++) {
+            attr = attributes[i];
+            if (attr.name.startsWith(Constants.prefixNameTrakingData)) {
+                attrObj[attr.name.replace(Constants.prefixNameTrakingData, '')] = attr.value;
+            }
+        }
+        return attrObj;
+    };
+
+
+
+    /**
+     * Do click in element and bind after the timeout the same callback to track clicks
      *
      * @private
      * @name Main#_bindClickEvent
@@ -82,21 +185,29 @@ module.exports = (function() {
      * @param Object attrs Object with all attributes to send
      * @function
      */
-    var _doClickElement = function(el) {
+    var _doClickElement = function(el, click) {
         el[0].click();
+        setTimeout(function() {
+            el.on('click', click);
+        }, 200);
     };
 
+
     /**
-     * Do submit in element
+     * Obtain unique id of the element. If it has not id, generate it
      *
      * @private
-     * @name Main#_doSubmitElement
+     * @name Main#_getSelector
      * @param Object el Dom element
-     * @param Object attrs Object with all attributes to send
      * @function
      */
-    var _doSubmitElement = function(el) {
-        el[0].submit();
+    var _getSelector = function(el) {
+        if (el.attr('id')) {
+            return el.attr('id');
+        }
+        var randomId = Generator.getId();
+        el.attr('id', randomId);
+        return randomId;
     };
 
     /**
@@ -109,17 +220,20 @@ module.exports = (function() {
      * @function
      */
     var _bindClickEvent = function(el, attrs) {
-        var click = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            el.unbind('click', click);
-            setTimeout(function() {
-                _doClickElement(el);
-            }, Constants.defaultTimeout);
-            client.track(Constants.clickEvent, attrs);
-            return false;
-        };
-        el.click(click);
+        if (el.prop('tagName').toLowerCase() === 'a') {
+            window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs);
+        } else {
+            var click = function(e) {
+                e.preventDefault();
+                el.unbind('click', click);
+                setTimeout(function() {
+                    _doClickElement(el, click);
+                }, Constants.defaultTimeout);
+                window.mixpanel.track(Constants.clickEvent, attrs);
+            };
+            el.on('click', click);
+        }
+
     };
 
     /**
@@ -132,22 +246,17 @@ module.exports = (function() {
      * @function
      */
     var _bindSubmitEvent = function(el, attrs) {
-        var submit = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            el.unbind('submit', submit);
-            setTimeout(function() {
-                _doSubmitElement(el);
-            }, Constants.defaultTimeout);
-            var values = {};
-            $.each(el.serializeArray(), function(i, field) {
-                values[field.name] = field.value;
+        if (el.prop('tagName').toLowerCase() === 'form') {
+            window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() {
+                var values = {};
+                $.each(el.serializeArray(), function(i, field) {
+                    values['form_' + field.name] = field.value;
+                });
+                return $.extend({}, attrs, values);
             });
-            attrs.payload = values;
-            client.track(Constants.submitEvent, attrs);
-            return false;
-        };
-        el.submit(submit);
+        } else {
+            console.error('submit event if only allowed in form tags');
+        }
     };
 
     /**
@@ -159,7 +268,7 @@ module.exports = (function() {
      * @function
      */
     var _bindTracking = function(el) {
-        var attrs = Dom.getTrackDataOfElem(el);
+        var attrs = _getTrackDataOfElem(el);
         if (attrs.event) {
             var eventName = attrs.event;
             delete attrs.event;
@@ -171,7 +280,7 @@ module.exports = (function() {
                     _bindSubmitEvent(el, attrs);
                     break;
                 default:
-                    console.warn('Event not found! ('+ eventName +')');
+                    console.warn('Event not found! (' + eventName + ')');
             }
         } else {
             logger.error('Element has not defined event attribute');
@@ -182,7 +291,7 @@ module.exports = (function() {
      * Search dom elements that have tracking data
      *
      * @private
-     * @name Main#_startTracking
+     * @name Main#_searchTrackings
      * @function
      */
     var _searchTrackings = function() {
@@ -206,8 +315,8 @@ module.exports = (function() {
     var _sendPageViewEvent = function() {
         logger.debug('Sending page view event');
         var el = $('body');
-        var attrs = Dom.getTrackDataOfElem(el);
-        client.track(Constants.pageViewEvent, attrs);
+        var attrs = _getTrackDataOfElem(el);
+        window.mixpanel.track(Constants.pageViewEvent, attrs);
     };
 
     /**
@@ -219,47 +328,41 @@ module.exports = (function() {
      */
     var _startTracking = function() {
         logger.debug('Starting tracking');
-        _sendPageViewEvent();
-        _searchTrackings();
+        try {
+            _sendPageViewEvent();
+            _searchTrackings();
+        } catch (e) {
+            console.error(e);
+        }
+
     };
 
     /**
      * Init function
      *
      * @name Main#init
-     * @param {String} nameClient Name of client that use (mixpanel)
      * @param {String} token token authentication
+     * @param {Number} levelLogger 0: error, 1: warn, 2: info, 3: debug
      * @function
      */
-    var init = function(nameClient, token) {
-        client = TrackingFactory.getTrackingClient(nameClient);
-        if(client){
-            var promise = client.init(token);
-            promise.then(_startTracking);
-            promise.catch(function(e) {
-                logger.error('Error to init mixpanel ' + e);
-            });
+    var init = function(levelLogger) {
+        if ($ === undefined) {
+            throw new Error('Jquery not load');
         }
-    };
+        if (window.mixpanel === undefined) {
+            throw new Error('window.Mixpanel not load');
+        }
 
-    /**
-     * Track function
-     *
-     * @name Main#track
-     * @param {String} event Name of the event
-     * @param {Object} data Data to send
-     * @function
-     */
-    var track = function(event, data){
-        client.track(event, data);
+        logger = new Logger(levelLogger);
+        _startTracking();
+
     };
 
     //export a tracking and init function
-    global.window.trackingWallet = {
-        track : track,
-        init : init
+    window.trackingWallet = {
+        init: init
     };
-}());
+}(window, jQuery));
 </pre>
 	</article>
 </section>
@@ -292,7 +395,7 @@ module.exports = (function() {
 
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a>
-	on 2015-11-12T19:20:14+01:00 using the <a
+	on 2015-11-13T14:26:10+01:00 using the <a
 	href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 </span>
 </footer>

@@ -20,8 +20,7 @@
     "white": true,
     "validthis": true,
     "globals": {
-        "require": false,
-        "global": false,
+
         "XMLHttpRequest": false,
         "describe": false,
         "beforeEach": false,
@@ -34,6 +33,9 @@
         "expect": false,
         "browser": false,
         "Integer": false,
-        "module": false
+        "module": false,
+        "window": false,
+        "jQuery": false,
+        "mixpanel": false
     }
 }

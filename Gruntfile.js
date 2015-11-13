@@ -10,7 +10,6 @@ module.exports = function(grunt) {
 
     var taskConfig = {
 
-
         pkg: grunt.file.readJSON('package.json'),
 
         'notify_hooks': {
@@ -22,8 +21,6 @@ module.exports = function(grunt) {
                 duration: 3 // the duration of notification in seconds, for `notify-send only
             }
         },
-
-
 
         clean: [
             '<%= buildDir %>'
@@ -37,92 +34,8 @@ module.exports = function(grunt) {
 
                 force: true
             },
-            js: ['src/**/*.js', '!src/js/tracking/Mixpanel.js'],
+            js: ['src/**/*.js'],
             testUnit: ['test/unit/**/*.spec.js']
-        },
-        replace: {
-            prod: {
-                options: {
-                    patterns: [{
-                        match: /require/g,
-                        replacement: '_dereq_'
-                    }, {
-                        match:'levelLogger',
-                        replacement: '0'
-                    }]
-                },
-                files: [{
-                    expand: true,
-                    flatten: true,
-                    src: ['<%= buildDir %>/tracking-wallet.js'],
-                    dest: '<%= buildDir %>/'
-                }]
-            },
-            staging: {
-                options: {
-                    patterns: [{
-                        match: /require/g,
-                        replacement: '_dereq_'
-                    }, {
-                        match:'levelLogger',
-                        replacement: '1'
-                    }]
-                },
-                files: [{
-                    expand: true,
-                    flatten: true,
-                    src: ['<%= buildDir %>/tracking-wallet.js'],
-                    dest: '<%= buildDir %>/'
-                }]
-            },
-            dev: {
-                options: {
-                    patterns: [{
-                        match: /require/g,
-                        replacement: '_dereq_'
-                    }, {
-                        match:'levelLogger',
-                        replacement: '3'
-                    }]
-                },
-                files: [{
-                    expand: true,
-                    flatten: true,
-                    src: ['<%= buildDir %>/tracking-wallet.js'],
-                    dest: '<%= buildDir %>/'
-                }]
-            }
-        },
-        browserify: {
-
-            dev: {
-                options: {
-                    browserifyOptions: {
-                        debug: true,
-                        paths: ['src/js'],
-                        plugin: [
-                            ['browserify-derequire']
-                        ]
-                    }
-                },
-                files: {
-                    '<%= buildDir %>/tracking-wallet.js': ['<%= devDir %>/js/**/*.js'],
-                }
-            },
-            dist: {
-                options: {
-                    browserifyOptions: {
-                        debug: false,
-                        paths: ['src/js'],
-                        plugin: [
-                            ['browserify-derequire']
-                        ]
-                    }
-                },
-                files: {
-                    '<%= buildDir %>/tracking-wallet.js': ['<%= devDir %>/js/**/*.js'],
-                }
-            }
         },
         compress: {
             main: {
@@ -150,7 +63,7 @@ module.exports = function(grunt) {
                 options: {
                     port: 3001,
                     hostname: '0.0.0.0',
-                    base: ['build', 'test'],
+                    base: ['build', 'test', 'src'],
                     livereload: true
                 }
             }
@@ -162,16 +75,8 @@ module.exports = function(grunt) {
             },
             js: {
                 files: {
-                    '<%= buildDir %>/tracking-wallet.min.js': ['<%= buildDir %>/tracking-wallet.js']
+                    '<%= buildDir %>/tracking-wallet.min.js': ['src/js/tracking-wallet.js']
                 }
-            }
-        },
-        karma: {
-            unit: {
-                configFile: 'karma.conf.js'
-            },
-            unitWatch: {
-                configFile: 'karmaWatch.conf.js'
             }
         },
         jsdoc: {
@@ -190,11 +95,7 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['src/**/*.js'],
-                tasks: ['jshint:js', 'browserify:dev', 'replace:' + target/*, 'karma:unitWatch'*/]
-            },
-            testUnit: {
-                files: ['test/unit/**/*.js'],
-                tasks: ['jshint:testUnit', 'karma:unitWatch']
+                tasks: ['jshint:js']
             }
         },
 
@@ -203,8 +104,8 @@ module.exports = function(grunt) {
 
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
-    grunt.registerTask('build', ['clean', 'jshint', 'browserify:dev', 'replace:dev']);
-    grunt.registerTask('dist', ['clean', 'build', 'browserify:dist', 'replace:' + target, 'uglify:js', 'compress', 'jsdoc']);
+    grunt.registerTask('build', ['clean', 'jshint']);
+    grunt.registerTask('dist', ['clean', 'build', 'uglify:js', 'compress', 'jsdoc']);
     grunt.registerTask('test', ['karma:unit', 'build']);
     grunt.registerTask('serve', ['build', 'connect:serverTest',  'watch']);
 
