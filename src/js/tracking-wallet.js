@@ -294,6 +294,9 @@
 
         logger = new Logger(levelLogger);
         _startTracking();
+        window.mixpanel.set_config({
+            debug:levelLogger === 3
+        });
 
     };
 
