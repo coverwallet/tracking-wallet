@@ -14,27 +14,23 @@ cd tracking-wallet
 npm install
 grunt serve
 
-// To dev environment
-grunt dist --target=dev
+//compile lib
+grunt dist
 
-// To staging environment
-grunt dist --target=staging
 
-// To pro environment
-grunt dist --target=prod
 
 ````
 Usage
 --------------
 
 ````javascript
+//depends of mixpanel and jquery
 <script type="text/javascript" src="<path>/build/tracking-wallet.min.js"></script>
 <script type="text/javascript">
     /**
-        client posibilities: mixpanel
-        token: token of your client
+        levelLogger: 0 error, 1 warn, 2 info, 3 debug
     */
-    trackingWallet.init(<client>, <token>);
+    trackingWallet.init(<levelLogger>);
 </script>
 
 
@@ -56,7 +52,7 @@ Usage
         </form>
         <script type="text/javascript" src="tracking-wallet.js"></script>
         <script type="text/javascript">
-            window.trackingWallet.init('mixpanel', 'token');
+            window.trackingWallet.init(0);
 
         </script>
     </body>
