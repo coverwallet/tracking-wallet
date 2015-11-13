@@ -160,7 +160,7 @@
      */
     var _bindClickEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'a') {
-            window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs);
+            window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs);// jshint ignore:line
         } else {
             var click = function(e) {
                 e.preventDefault();
@@ -186,7 +186,7 @@
      */
     var _bindSubmitEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'form') {
-            window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() {
+            window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() {// jshint ignore:line
                 var values = {};
                 $.each(el.serializeArray(), function(i, field) {
                     values['form_' + field.name] = field.value;
@@ -294,7 +294,7 @@
 
         logger = new Logger(levelLogger);
         _startTracking();
-        window.mixpanel.set_config({
+        window.mixpanel.set_config({// jshint ignore:line
             debug:levelLogger === 3
         });
 
