@@ -101,6 +101,19 @@
     var logger = null;
 
     /**
+     * Return String with capitalize first letter
+     * @public
+     * @name Main#capitalizeName
+     * @function
+     * @param {Object} String
+     */
+    var capitalizeName = function(string){
+        var text = string.replace(Constants.prefixNameTrakingData, '');
+        text = string.replace('-', ' ');
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    };
+
+    /**
      * Return object with all tracking properties of the param element
      * @public
      * @name Main#_getTrackDataOfElem
@@ -114,7 +127,7 @@
         for (i = 0, length = attributes.length; i < length; i++) {
             attr = attributes[i];
             if (attr.name.startsWith(Constants.prefixNameTrakingData)) {
-                attrObj[attr.name.replace(Constants.prefixNameTrakingData, '')] = attr.value;
+                attrObj[capitalizeName(attr.name)] = attr.value;
             }
         }
         return attrObj;
@@ -197,7 +210,9 @@
             window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() { // jshint ignore:line
                 var values = {};
                 $.each(el.serializeArray(), function(i, field) {
-                    values['form_' + field.name] = field.value;
+                    if(field.data('tw-name')){
+                        values['form_' + field.data('tw-name')] = field.value;
+                    }
                 });
                 return $.extend({}, attrs, values);
             });
@@ -310,7 +325,6 @@
 
     //export a tracking and init function
     window.trackingWallet = {
-        init: init,
-        mixpanel: window.mixpanel
+        init: init
     };
 }(window, jQuery));
