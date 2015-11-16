@@ -53,7 +53,7 @@ Usage
         </form>
         <script type="text/javascript" src="tracking-wallet.js"></script>
         <script type="text/javascript">
-            window.trackingWallet.init(0);
+            window.trackingWallet.init();
 
         </script>
     </body>
