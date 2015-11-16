@@ -204,7 +204,7 @@
                 setTimeout(function() {
                     _doClickElement(el, click);
                 }, Constants.defaultTimeout);
-                window.mixpanel.track(Constants.clickEvent, attrs);
+                window.mixpanel.track(_capitalize(Constants.clickEvent), attrs);
             };
             el.on('click', click);
         }
