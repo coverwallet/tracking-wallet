@@ -145,8 +145,8 @@
             return el.attr('id');
         }
         var randomId = Generator.getId();
-        el.attr('id', randomId);
-        return randomId;
+        el.attr('id', 'tw-' + randomId);
+        return 'tw-' + randomId;
     };
 
     /**
@@ -161,6 +161,7 @@
     var _bindClickEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'a') {
             window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs);// jshint ignore:line
+            logger.debug('Bind event click in ' + el._getSelector(el));
         } else {
             var click = function(e) {
                 e.preventDefault();
