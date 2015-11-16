@@ -36,8 +36,8 @@
      */
     Logger.prototype.info = function(text) {
         if (this.levelLogger >= 2) {
-            if (window.window && window.window.console && window.window.console.info) {
-                window.window.console.info(this.preText + text);
+            if (window && window.console && window.console.info) {
+                window.console.info(text);
             }
         }
     };
@@ -51,8 +51,8 @@
      */
     Logger.prototype.warn = function(text) {
         if (this.levelLogger >= 1) {
-            if (window.window && window.window.console && window.window.console.warn) {
-                window.window.console.warn(this.preText + text);
+            if (window && window.console && window.console.warn) {
+                window.console.warn(text);
             }
         }
     };
@@ -66,8 +66,8 @@
      */
     Logger.prototype.error = function(text) {
         if (this.levelLogger >= 0) {
-            if (window.window && window.window.console && window.window.console.error) {
-                window.window.console.error(this.preText + text);
+            if (window && window.console && window.console.error) {
+                window.console.error(text);
             }
         }
     };
@@ -108,9 +108,13 @@
      * @param {Object} String
      */
     var capitalizeName = function(string){
-        var text = string.replace(Constants.prefixNameTrakingData, '');
-        text = string.replace('-', ' ');
-        return text.charAt(0).toUpperCase() + text.slice(1);
+        if(string !== Constants.prefixNameTrakingData + 'event'){
+            var text = string.replace(Constants.prefixNameTrakingData, '');
+            text = text.replace('-', ' ');
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }else{
+            return string.replace(Constants.prefixNameTrakingData, '');
+        }
     };
 
     /**
@@ -210,8 +214,8 @@
             window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() { // jshint ignore:line
                 var values = {};
                 $.each(el.serializeArray(), function(i, field) {
-                    if(field.data('tw-name')){
-                        values['form_' + field.data('tw-name')] = field.value;
+                    if($(field).data('tw-name')){
+                        values['form_' + $(field).data('tw-name')] = field.value;
                     }
                 });
                 return $.extend({}, attrs, values);
