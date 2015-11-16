@@ -310,6 +310,7 @@
 
     //export a tracking and init function
     window.trackingWallet = {
-        init: init
+        init: init,
+        mixpanel: window.mixpanel
     };
 }(window, jQuery));
