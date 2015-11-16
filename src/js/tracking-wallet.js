@@ -213,7 +213,7 @@
         if (el.prop('tagName').toLowerCase() === 'form') {
             window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() { // jshint ignore:line
                 var values = {};
-                $.each(el.find('input'), function(i, field) {
+                $.each(el.find('input, select'), function(i, field) {
                     if($(field).data('tw-name')){
                         values[$(field).data('tw-name')] = $(field).val();
                     }
