@@ -161,7 +161,7 @@
     var _bindClickEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'a') {
             window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs);// jshint ignore:line
-            logger.debug('Bind event click in ' + el._getSelector(el));
+            logger.debug('Bind event click in ' + _getSelector(el));
         } else {
             var click = function(e) {
                 e.preventDefault();
