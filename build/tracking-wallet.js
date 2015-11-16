@@ -101,20 +101,31 @@
     var logger = null;
 
     /**
-     * Return String with capitalize first letter
+     * Return String with capitalize first letter and change - by spaces
      * @public
-     * @name Main#capitalizeName
+     * @name Main#humanReadString
      * @function
      * @param {Object} String
      */
-    var capitalizeName = function(string){
+    var humanReadString = function(string){
         if(string !== Constants.prefixNameTrakingData + 'event'){
             var text = string.replace(Constants.prefixNameTrakingData, '');
             text = text.replace('-', ' ');
-            return text.charAt(0).toUpperCase() + text.slice(1);
+            return capitalize(text);
         }else{
             return string.replace(Constants.prefixNameTrakingData, '');
         }
+    };
+
+    /**
+     * Return String with capitalize first letter
+     * @public
+     * @name Main#capitalize
+     * @function
+     * @param {Object} String
+     */
+    var capitalize = function(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
     /**
@@ -131,7 +142,7 @@
         for (i = 0, length = attributes.length; i < length; i++) {
             attr = attributes[i];
             if (attr.name.startsWith(Constants.prefixNameTrakingData)) {
-                attrObj[capitalizeName(attr.name)] = attr.value;
+                attrObj[humanReadString(attr.name)] = attr.value;
             }
         }
         return attrObj;
@@ -184,7 +195,7 @@
      */
     var _bindClickEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'a') {
-            window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs); // jshint ignore:line
+            window.mixpanel.track_links('#' + _getSelector(el), capitalize(Constants.clickEvent), attrs); // jshint ignore:line
             logger.debug('Bind event click in ' + _getSelector(el));
         } else {
             var click = function(e) {
@@ -211,7 +222,7 @@
      */
     var _bindSubmitEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'form') {
-            window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() { // jshint ignore:line
+            window.mixpanel.track_forms('#' + _getSelector(el), capitalize(Constants.submitEvent), function() { // jshint ignore:line
                 var values = {};
                 $.each(el.find('input, select'), function(i, field) {
                     if($(field).data('tw-name')){
