@@ -28,9 +28,9 @@ Usage
 <script type="text/javascript" src="<path>/build/tracking-wallet.min.js"></script>
 <script type="text/javascript">
     /**
-        levelLogger: 0 error, 1 warn, 2 info, 3 debug
+        Init library. Get level log of data-event attribute in body tag. If data-env is different of production, log is debug
     */
-    trackingWallet.init(<levelLogger>);
+    trackingWallet.init();
 </script>
 
 
@@ -43,11 +43,12 @@ Usage
     -->
 
 <html>
-    <body data-tw-app='test-dev' data-tw-page="testPage" data-tw-section="Home section">
+    <body data-tw-app='test-dev' data-tw-page="testPage" data-tw-section="Home section" data-env="development">
         <a href="./index.html" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
         <form action="./index.html" method="GET" data-tw-event="submit" data-tw-name="pedirNombre">
             <label for="name">Nombre</label>
-            <input type="text" name="name" id="name" data-tw-event="click" data-tw-input="name">
+            <!-- For send input, is necesary data-tw-event in field -->
+            <input type="text" name="name" id="name" data-tw-event="click" data-tw-name="name">
             <input type="submit" data-tw-event="click"/>
         </form>
         <script type="text/javascript" src="tracking-wallet.js"></script>
