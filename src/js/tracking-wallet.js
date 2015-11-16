@@ -103,16 +103,16 @@
     /**
      * Return String with capitalize first letter and change - by spaces
      * @public
-     * @name Main#humanReadString
+     * @name Main#_humanReadString
      * @function
      * @param {Object} String
      */
-    var humanReadString = function(string){
-        if(string !== Constants.prefixNameTrakingData + 'event'){
+    var _humanReadString = function(string) {
+        if (string !== Constants.prefixNameTrakingData + 'event') {
             var text = string.replace(Constants.prefixNameTrakingData, '');
             text = text.replace('-', ' ');
-            return capitalize(text);
-        }else{
+            return _capitalize(text);
+        } else {
             return string.replace(Constants.prefixNameTrakingData, '');
         }
     };
@@ -120,11 +120,11 @@
     /**
      * Return String with capitalize first letter
      * @public
-     * @name Main#capitalize
+     * @name Main#_capitalize
      * @function
      * @param {Object} String
      */
-    var capitalize = function(string){
+    var _capitalize = function(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
@@ -142,7 +142,7 @@
         for (i = 0, length = attributes.length; i < length; i++) {
             attr = attributes[i];
             if (attr.name.startsWith(Constants.prefixNameTrakingData)) {
-                attrObj[humanReadString(attr.name)] = attr.value;
+                attrObj[_humanReadString(attr.name)] = attr.value;
             }
         }
         return attrObj;
@@ -195,7 +195,7 @@
      */
     var _bindClickEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'a') {
-            window.mixpanel.track_links('#' + _getSelector(el), capitalize(Constants.clickEvent), attrs); // jshint ignore:line
+            window.mixpanel.track_links('#' + _getSelector(el), _capitalize(Constants.clickEvent), attrs); // jshint ignore:line
             logger.debug('Bind event click in ' + _getSelector(el));
         } else {
             var click = function(e) {
@@ -212,6 +212,24 @@
     };
 
     /**
+     * Extract data of form to send in mixpanel object
+     *
+     * @private
+     * @name Main#extractDataForm
+     * @param Object el Dom element
+     * @function
+     */
+    var extractDataForm = function(el) {
+        var values = {};
+        $.each(el.find('input, select'), function(i, field) {
+            if ($(field).data('tw-name')) {
+                values[$(field).data('tw-name')] = $(field).val();
+            }
+        });
+        return values;
+    };
+
+    /**
      * Track submit event
      *
      * @private
@@ -222,13 +240,8 @@
      */
     var _bindSubmitEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'form') {
-            window.mixpanel.track_forms('#' + _getSelector(el), capitalize(Constants.submitEvent), function() { // jshint ignore:line
-                var values = {};
-                $.each(el.find('input, select'), function(i, field) {
-                    if($(field).data('tw-name')){
-                        values[$(field).data('tw-name')] = $(field).val();
-                    }
-                });
+            window.mixpanel.track_forms('#' + _getSelector(el), _capitalize(Constants.submitEvent), function() { // jshint ignore:line
+                var values = extractDataForm(el);
                 return $.extend({}, attrs, values);
             });
         } else {
@@ -340,6 +353,7 @@
 
     //export a tracking and init function
     window.trackingWallet = {
-        init: init
+        init: init,
+        extractDataForm: extractDataForm
     };
 }(window, jQuery));
