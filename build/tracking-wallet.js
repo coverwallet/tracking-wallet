@@ -215,7 +215,7 @@
                 var values = {};
                 $.each(el.find('input'), function(i, field) {
                     if($(field).data('tw-name')){
-                        values['form_' + $(field).data('tw-name')] = field.val();
+                        values['form_' + $(field).data('tw-name')] = $(field).val();
                     }
                 });
                 return $.extend({}, attrs, values);
