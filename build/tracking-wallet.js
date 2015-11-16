@@ -78,7 +78,14 @@
     var Generator = function() {};
 
     Generator.getId = function() {
-        return Math.floor(Math.random() * 26) + Date.now();
+        function chr4() {
+            return Math.random().toString(16).slice(-4);
+        }
+        return chr4() + chr4() +
+            '-' + chr4() +
+            '-' + chr4() +
+            '-' + chr4() +
+            '-' + chr4() + chr4() + chr4();
     };
 
 
@@ -160,7 +167,7 @@
      */
     var _bindClickEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'a') {
-            window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs);// jshint ignore:line
+            window.mixpanel.track_links('#' + _getSelector(el), Constants.clickEvent, attrs); // jshint ignore:line
             logger.debug('Bind event click in ' + _getSelector(el));
         } else {
             var click = function(e) {
@@ -187,7 +194,7 @@
      */
     var _bindSubmitEvent = function(el, attrs) {
         if (el.prop('tagName').toLowerCase() === 'form') {
-            window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() {// jshint ignore:line
+            window.mixpanel.track_forms('#' + _getSelector(el), Constants.submitEvent, function() { // jshint ignore:line
                 var values = {};
                 $.each(el.serializeArray(), function(i, field) {
                     values['form_' + field.name] = field.value;
@@ -295,8 +302,8 @@
 
         logger = new Logger(levelLogger);
         _startTracking();
-        window.mixpanel.set_config({// jshint ignore:line
-            debug:levelLogger === 3
+        window.mixpanel.set_config({ // jshint ignore:line
+            debug: levelLogger === 3
         });
 
     };
