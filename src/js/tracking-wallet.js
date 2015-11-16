@@ -332,15 +332,18 @@
      *
      * @name Main#init
      * @param {String} token token authentication
-     * @param {Number} levelLogger 0: error, 1: warn, 2: info, 3: debug
      * @function
      */
-    var init = function(levelLogger) {
+    var init = function() {
         if ($ === undefined) {
             throw new Error('Jquery not load');
         }
         if (window.mixpanel === undefined) {
             throw new Error('window.Mixpanel not load');
+        }
+        var levelLogger = 0;
+        if($('body').data('env') && $('body').data('env').toLowerCase() !== 'production'){
+            levelLogger = 3;
         }
 
         logger = new Logger(levelLogger);
