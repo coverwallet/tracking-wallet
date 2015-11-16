@@ -1,12 +1,12 @@
 {
   "name": "tracking-wallet",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/coverwallet/tracking-wallet",
   "authors": [
     "Ra <rareq1987@gmail.com>"
   ],
   "license": "MIT",
-  "main": "build/tracking-wallet.min.js",
+  "main": "build/tracking-wallet.js",
   "ignore": [
     "**/.*",
     "node_modules",

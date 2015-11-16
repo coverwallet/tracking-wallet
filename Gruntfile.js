@@ -79,6 +79,15 @@ module.exports = function(grunt) {
                 }
             }
         },
+        copy: {
+            main: {
+                cwd:'src/js/',
+                expand:true,
+                src: 'tracking-wallet.js',
+                dest: '<%= buildDir %>/',
+            },
+        },
+
         jsdoc: {
             dist: {
                 src: ['src/**/*.js', 'test/unit/**/*.spec.js'],
@@ -105,8 +114,8 @@ module.exports = function(grunt) {
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
     grunt.registerTask('build', ['clean', 'jshint']);
-    grunt.registerTask('dist', ['clean', 'build', 'uglify:js', 'compress', 'jsdoc']);
+    grunt.registerTask('dist', ['clean', 'build', 'copy:main', 'uglify:js', 'compress', 'jsdoc']);
     grunt.registerTask('test', ['karma:unit', 'build']);
-    grunt.registerTask('serve', ['build', 'connect:serverTest',  'watch']);
+    grunt.registerTask('serve', ['build', 'connect:serverTest', 'watch']);
 
 };
