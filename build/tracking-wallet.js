@@ -98,6 +98,7 @@
         submitEvent: 'submit',
         defaultTimeout: 300
     };
+    var defaultData = {};
     var logger = null;
 
     /**
@@ -259,6 +260,7 @@
      */
     var _bindTracking = function(el) {
         var attrs = _getTrackDataOfElem(el);
+        attrs = $.extend({}, defaultData, attrs);
         if (attrs.event) {
             var eventName = attrs.event;
             delete attrs.event;
@@ -306,6 +308,8 @@
         logger.debug('Sending page view event');
         var el = $('body');
         var attrs = _getTrackDataOfElem(el);
+        //saving default data
+        defaultData = attrs;
         window.mixpanel.track(Constants.pageViewEvent, attrs);
     };
 
@@ -354,9 +358,23 @@
 
     };
 
+    /**
+     * Track event and complete attributes with default data of page (body data attributes)
+     *
+     * @name Main#track
+     * @param {String} event Name of event
+     * @param {Object} attrs Attributes to send
+     * @function
+     */
+    var track = function(event, attrs){
+        var objectToSend = $.extend({}, defaultData, attrs);
+        window.mixpanel.track(event, objectToSend);
+    };
+
     //export a tracking and init function
     window.trackingWallet = {
         init: init,
+        track: track,
         extractDataForm: extractDataForm
     };
 }(window, jQuery));
