@@ -351,10 +351,11 @@
         }
 
         logger = new Logger(levelLogger);
-        _startTracking();
         window.mixpanel.set_config({ // jshint ignore:line
             debug: levelLogger === 3
         });
+        _startTracking();
+
 
     };
 
