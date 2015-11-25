@@ -142,7 +142,7 @@
             attrObj = {};
         for (i = 0, length = attributes.length; i < length; i++) {
             attr = attributes[i];
-            if (attr.name.startsWith(Constants.prefixNameTrakingData)) {
+            if (attr.name.indexOf(Constants.prefixNameTrakingData) === 0) {
                 attrObj[_humanReadString(attr.name)] = attr.value;
             }
         }
