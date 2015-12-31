@@ -372,10 +372,38 @@
         window.mixpanel.track(event, objectToSend);
     };
 
-    //export a tracking and init function
+    /**
+     * Identify a user with a unique ID. All subsequent actions caused by this user will be tied to this unique ID.
+     * https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.identify
+     *
+     * @name Main#identify
+     * @param {String} unique_id A string that uniquely identifies a user
+     * @function
+     */
+    var identify = function(unique_id){
+        window.mixpanel.identify(unique_id);
+    };
+
+    /**
+     * Create an alias, which Mixpanel will use to link two distinct_ids going forward
+     * https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.alias
+     *
+     * @name Main#alias
+     * @param {String} alias A unique identifier that you want to use for this user in the future
+     * @param {String} original The current identifier being used for this user
+     * @function
+     */
+    var alias = function(alias, original){
+        window.mixpanel.alias(alias, original);
+    };
+
     window.trackingWallet = {
         init: init,
         track: track,
-        extractDataForm: extractDataForm
+        extractDataForm: extractDataForm,
+        identify: identify,
+        alias: alias,
+        people: window.mixpanel.people
     };
+
 }(window, jQuery));
