@@ -397,13 +397,27 @@
         window.mixpanel.alias(alias, original);
     };
 
+    /**
+     * Set properties on a user record.
+     * https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.people.set
+     *
+     * @name Main#set
+     * @param {Object} Properties
+     * @function
+     */
+    var set = function(properties){
+        window.mixpanel.people.set(properties);
+    };
+
     window.trackingWallet = {
         init: init,
         track: track,
         extractDataForm: extractDataForm,
         identify: identify,
         alias: alias,
-        people: window.mixpanel.people
+        people: {
+            set: set
+        }
     };
 
 }(window, jQuery));
