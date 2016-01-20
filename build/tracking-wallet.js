@@ -133,6 +133,7 @@
     var Constants = {
         prefixNameTrakingData: 'data-tw-',
         nameTrackingEventData: 'data-tw-event',
+        prefixNameTrackingOwnerDomain: 'tw-owner-domain',
         preTextLogger: 'TR-W',
         pageViewEvent: 'Page view',
         clickEvent: 'click',
@@ -504,7 +505,7 @@
      * @function
      */
     var init = function (initialConfig) {
-        config = initialConfig;
+        config = {};
         if($ === undefined) {
             throw new Error('Jquery not load');
         }
@@ -515,6 +516,7 @@
         if($('body').data('env') && $('body').data('env').toLowerCase() !== 'production') {
             levelLogger = 3;
         }
+        config.ownerDomain = $('body').data(Constants.prefixNameTrackingOwnerDomain);
 
         logger = new Logger(levelLogger);
         window.mixpanel.set_config({ // jshint ignore:line

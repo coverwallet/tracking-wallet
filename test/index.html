@@ -6,13 +6,13 @@ mixpanel.init("0b9b4c8fd236491c27730460534d83ff");</script><!-- end Mixpanel -->
 
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     </head>
-    <body data-tw-app='test-dev' data-tw-page="homePage" data-tw-section="Home section" data-env="development">
+    <body data-tw-owner-domain='coverwallet' data-tw-app='test-dev' data-tw-page="homePage" data-tw-section="Home section" data-env="development">
         <h1>Home</h1>
         <p>Page to test tracking wallet library</p>
         <a href="./test.html" id="to_test" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
         <script type="text/javascript" src="js/tracking-wallet.js"></script>
         <script type="text/javascript">
-            trackingWallet.init({ownerDomain: 'localhost'});
+            trackingWallet.init();
 
             document.addEventListener("DOMContentLoaded", function() {
                 //alert(mixpanel.get_distinct_id());
