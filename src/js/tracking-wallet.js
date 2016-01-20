@@ -415,7 +415,7 @@
         } else if(_isReferral()) {
             return 'referral';
         } else if(_isDirect()) {
-            return 'direct';
+            return '$direct';
         }
     };
     var formatUTM = function (utm) {
@@ -430,7 +430,7 @@
 
     var _getLastParams = function () {
 
-        var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term state'.split(' '),
+        var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' '),
             kw = '',
             params = {};
         var index;
@@ -440,17 +440,18 @@
                 params['Last ' + formatUTM(campaignKeywords[index])] = kw;
             }
         }
+        params['Last US State'] = getQueryParam(document.URL, 'state');
         params['Last Referrer'] = document.referrer;
-        params['Last URL'] = document.URL;
+        params['Last Entry URL'] = document.URL;
         params['Last Touch Source'] = _getTouchSource();
         return params;
     };
 
     var _getFirstParams = function () {
         var params = {};
-        params['First state'] = getQueryParam(document.URL, 'state');
+        params['First US State'] = getQueryParam(document.URL, 'state');
         params['First Referrer'] = document.referrer;
-        params['First URL'] = document.URL;
+        params['First Entry URL'] = document.URL;
         params['First Touch Source'] = _getTouchSource();
         return params;
     };
