@@ -20,7 +20,7 @@
     "white": true,
     "validthis": true,
     "globals": {
-
+        "document": false,
         "XMLHttpRequest": false,
         "describe": false,
         "beforeEach": false,

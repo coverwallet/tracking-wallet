@@ -3,13 +3,13 @@
  * @name Main
  * @namespace
  */
-(function(window, $) {
+(function (window, $) {
 
     /**
      * @name Logger
      * @class
      */
-    var Logger = function(levelLogger) {
+    var Logger = function (levelLogger) {
         this.levelLogger = levelLogger;
     };
     /**
@@ -19,9 +19,9 @@
      * @function
      * @param {String} Text to show
      */
-    Logger.prototype.debug = function(text) {
-        if (this.levelLogger >= 3) {
-            if (window && window.console && window.console.debug) {
+    Logger.prototype.debug = function (text) {
+        if(this.levelLogger >= 3) {
+            if(window && window.console && window.console.debug) {
                 window.console.debug(text);
             }
         }
@@ -34,9 +34,9 @@
      * @function
      * @param {String} Text to show
      */
-    Logger.prototype.info = function(text) {
-        if (this.levelLogger >= 2) {
-            if (window && window.console && window.console.info) {
+    Logger.prototype.info = function (text) {
+        if(this.levelLogger >= 2) {
+            if(window && window.console && window.console.info) {
                 window.console.info(text);
             }
         }
@@ -49,9 +49,9 @@
      * @function
      * @param {String} Text to show
      */
-    Logger.prototype.warn = function(text) {
-        if (this.levelLogger >= 1) {
-            if (window && window.console && window.console.warn) {
+    Logger.prototype.warn = function (text) {
+        if(this.levelLogger >= 1) {
+            if(window && window.console && window.console.warn) {
                 window.console.warn(text);
             }
         }
@@ -64,9 +64,9 @@
      * @function
      * @param {String} Text to show
      */
-    Logger.prototype.error = function(text) {
-        if (this.levelLogger >= 0) {
-            if (window && window.console && window.console.error) {
+    Logger.prototype.error = function (text) {
+        if(this.levelLogger >= 0) {
+            if(window && window.console && window.console.error) {
                 window.console.error(text);
             }
         }
@@ -75,9 +75,9 @@
     /**
      * Generator unique ids
      */
-    var Generator = function() {};
+    var Generator = function () {};
 
-    Generator.getId = function() {
+    Generator.getId = function () {
         function chr4() {
             return Math.random().toString(16).slice(-4);
         }
@@ -88,6 +88,47 @@
             '-' + chr4() + chr4() + chr4();
     };
 
+    /**
+     * Utility for manage cookie
+     */
+    var Cookie = function () {};
+    Cookie.getMixpanelCookie = function(){
+        if(document.cookie.length > 0) {
+            var cName = document.cookie.match(/mp_\w*_mixpanel/g);
+            if(cName && cName.length > 0){
+                var value = Cookie.get(cName[0]);
+                return JSON.parse(value);
+            }
+        }
+        return null;
+    };
+
+    Cookie.get = function (cName) {
+        if(document.cookie.length > 0) {
+            var cStart = document.cookie.indexOf(cName + '=');
+            if(cStart !== -1) {
+                cStart = cStart + cName.length + 1;
+                var cEnd = document.cookie.indexOf(';', cStart);
+                if(cEnd === -1) {
+                    cEnd = document.cookie.length;
+                }
+                return window.unescape(document.cookie.substring(cStart, cEnd));
+            }
+        }
+        return null;
+    };
+
+    Cookie.set = function (name, value, days) {
+        var expires;
+        if(days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toGMTString();
+        } else {
+            expires = '';
+        }
+        document.cookie = name + '=' + value + expires + '; path=/';
+    };
 
     var Constants = {
         prefixNameTrakingData: 'data-tw-',
@@ -96,10 +137,12 @@
         pageViewEvent: 'Page view',
         clickEvent: 'click',
         submitEvent: 'submit',
-        defaultTimeout: 300
+        defaultTimeout: 300,
+        cookieFirst: 'CW-FirstTime'
     };
     var defaultData = {};
     var logger = null;
+    var config = {};
 
     /**
      * Return String with capitalize first letter and change - by spaces
@@ -108,8 +151,8 @@
      * @function
      * @param {Object} String
      */
-    var _humanReadString = function(string) {
-        if (string !== Constants.prefixNameTrakingData + 'event') {
+    var _humanReadString = function (string) {
+        if(string !== Constants.prefixNameTrakingData + 'event') {
             var text = string.replace(Constants.prefixNameTrakingData, '');
             text = text.replace('-', ' ');
             return _capitalize(text);
@@ -125,7 +168,7 @@
      * @function
      * @param {Object} String
      */
-    var _capitalize = function(string) {
+    var _capitalize = function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
@@ -136,13 +179,13 @@
      * @function
      * @param {Object} Object with all tracking properties
      */
-    var _getTrackDataOfElem = function(el) {
+    var _getTrackDataOfElem = function (el) {
         var attributes = el[0].attributes;
         var length, i, attr = null,
             attrObj = {};
-        for (i = 0, length = attributes.length; i < length; i++) {
+        for(i = 0, length = attributes.length; i < length; i++) {
             attr = attributes[i];
-            if (attr.name.indexOf(Constants.prefixNameTrakingData) === 0) {
+            if(attr.name.indexOf(Constants.prefixNameTrakingData) === 0) {
                 attrObj[_humanReadString(attr.name)] = attr.value;
             }
         }
@@ -160,9 +203,9 @@
      * @param Object attrs Object with all attributes to send
      * @function
      */
-    var _doClickElement = function(el, click) {
+    var _doClickElement = function (el, click) {
         el[0].click();
-        setTimeout(function() {
+        setTimeout(function () {
             el.on('click', click);
         }, 200);
     };
@@ -176,8 +219,8 @@
      * @param Object el Dom element
      * @function
      */
-    var _getSelector = function(el) {
-        if (el.attr('id')) {
+    var _getSelector = function (el) {
+        if(el.attr('id')) {
             return el.attr('id');
         }
         var randomId = Generator.getId();
@@ -194,15 +237,15 @@
      * @param Object attrs Object with all attributes to send
      * @function
      */
-    var _bindClickEvent = function(el, attrs) {
-        if (el.prop('tagName').toLowerCase() === 'a') {
+    var _bindClickEvent = function (el, attrs) {
+        if(el.prop('tagName').toLowerCase() === 'a') {
             window.mixpanel.track_links('#' + _getSelector(el), _capitalize(Constants.clickEvent), attrs); // jshint ignore:line
             logger.debug('Bind event click in ' + _getSelector(el));
         } else {
-            var click = function(e) {
+            var click = function (e) {
                 e.preventDefault();
                 el.unbind('click', click);
-                setTimeout(function() {
+                setTimeout(function () {
                     _doClickElement(el, click);
                 }, Constants.defaultTimeout);
                 window.mixpanel.track(_capitalize(Constants.clickEvent), attrs);
@@ -220,10 +263,10 @@
      * @param Object el Dom element
      * @function
      */
-    var extractDataForm = function(el) {
+    var extractDataForm = function (el) {
         var values = {};
-        $.each(el.find('input, select'), function(i, field) {
-            if ($(field).data('tw-name')) {
+        $.each(el.find('input, select'), function (i, field) {
+            if($(field).data('tw-name')) {
                 values[$(field).data('tw-name')] = $(field).val();
             }
         });
@@ -239,9 +282,9 @@
      * @param Object attrs Object with all attributes to send
      * @function
      */
-    var _bindSubmitEvent = function(el, attrs) {
-        if (el.prop('tagName').toLowerCase() === 'form') {
-            window.mixpanel.track_forms('#' + _getSelector(el), _capitalize(Constants.submitEvent), function() { // jshint ignore:line
+    var _bindSubmitEvent = function (el, attrs) {
+        if(el.prop('tagName').toLowerCase() === 'form') {
+            window.mixpanel.track_forms('#' + _getSelector(el), _capitalize(Constants.submitEvent), function () { // jshint ignore:line
                 var values = extractDataForm(el);
                 return $.extend({}, attrs, values);
             });
@@ -258,21 +301,21 @@
      * @param Object el Dom element
      * @function
      */
-    var _bindTracking = function(el) {
+    var _bindTracking = function (el) {
         var attrs = _getTrackDataOfElem(el);
         attrs = $.extend({}, defaultData, attrs);
-        if (attrs.event) {
+        if(attrs.event) {
             var eventName = attrs.event;
             delete attrs.event;
-            switch (eventName) {
-                case Constants.clickEvent:
-                    _bindClickEvent(el, attrs);
-                    break;
-                case Constants.submitEvent:
-                    _bindSubmitEvent(el, attrs);
-                    break;
-                default:
-                    console.warn('Event not found! (' + eventName + ')');
+            switch(eventName) {
+            case Constants.clickEvent:
+                _bindClickEvent(el, attrs);
+                break;
+            case Constants.submitEvent:
+                _bindSubmitEvent(el, attrs);
+                break;
+            default:
+                console.warn('Event not found! (' + eventName + ')');
             }
         } else {
             logger.error('Element has not defined event attribute');
@@ -286,12 +329,12 @@
      * @name Main#_searchTrackings
      * @function
      */
-    var _searchTrackings = function() {
+    var _searchTrackings = function () {
         var lengthElems, i = null;
         var elements = $('[' + Constants.nameTrackingEventData + ']');
-        if (elements && elements.length > 0) {
+        if(elements && elements.length > 0) {
             lengthElems = elements.length;
-            for (i = 0; i < lengthElems; i++) {
+            for(i = 0; i < lengthElems; i++) {
                 _bindTracking($(elements[i]));
             }
         }
@@ -304,13 +347,132 @@
      * @name Main#_sendPageViewEvent
      * @function
      */
-    var _sendPageViewEvent = function() {
+    var _sendPageViewEvent = function () {
         logger.debug('Sending page view event');
         var el = $('body');
         var attrs = _getTrackDataOfElem(el);
         //saving default data
         defaultData = attrs;
         window.mixpanel.track(Constants.pageViewEvent, attrs);
+    };
+
+    var getQueryParam = function (url, param) {
+        // Expects a raw URL
+        param = param.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+        var regexS = '[\\?&]' + param + '=([^&#]*)',
+            regex = new RegExp(regexS),
+            results = regex.exec(url);
+        if(results === null || (results && typeof (results[1]) !== 'string' && results[1].length)) {
+            return '';
+        } else {
+            return decodeURIComponent(results[1]).replace(/\+/g, ' ');
+        }
+    };
+
+    var contains = function (text, search) {
+        return text && text.indexOf(search) >= 0;
+    };
+
+    var _isSEO = function () {
+        var url = document.referrer;
+        if(contains(url, 'google') || contains(url, 'bing') || contains(url, 'yahoo')) {
+            return true;
+        }
+        return false;
+    };
+    var _isSocial = function () {
+        var url = document.referrer;
+        if(contains(url, 'facebook') || contains(url, 'twitter') || contains(url, 'plus.google') || contains(url, 'linkedin') || contains(url, 'pinterest') || contains(url, 'instagram')) {
+            return true;
+        }
+        return false;
+    };
+    var _isReferral = function () {
+        var url = document.referrer;
+        if(!_isSocial() && !_isSEO() && url) {
+            return true;
+        }
+        return false;
+    };
+
+    var _isDirect = function () {
+        if(!_isReferral()) {
+            return true;
+        }
+        return false;
+    };
+
+    var _getTouchSource = function () {
+        var utmMedium = getQueryParam(document.URL, 'utm_medium');
+        if(utmMedium) {
+            return utmMedium;
+        }
+        if(_isSocial()) {
+            return 'social';
+        } else if(_isSEO()) {
+            return 'seo';
+        } else if(_isReferral()) {
+            return 'referral';
+        } else if(_isDirect()) {
+            return 'direct';
+        }
+    };
+    var formatUTM = function (utm) {
+        var parts = utm.split('_');
+        if (parts.length > 1){
+            return parts[0].toUpperCase() + ' ' + _capitalize(parts[1]);
+        }else{
+             return _capitalize(utm);
+        }
+
+    };
+
+    var _getLastParams = function () {
+
+        var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term state'.split(' '),
+            kw = '',
+            params = {};
+        var index;
+        for(index = 0; index < campaignKeywords.length; ++index) {
+            kw = getQueryParam(document.URL, campaignKeywords[index]);
+            if(kw.length) {
+                params['Last ' + formatUTM(campaignKeywords[index])] = kw;
+            }
+        }
+        params['Last Referrer'] = document.referrer;
+        params['Last URL'] = document.URL;
+        params['Last Touch Source'] = _getTouchSource();
+        return params;
+    };
+
+    var _getFirstParams = function () {
+        var params = {};
+        params['UTM Term'] = getQueryParam(document.URL, 'utm_term');
+        params['First state'] = getQueryParam(document.URL, 'state');
+        params['First Referrer'] = document.referrer;
+        params['First URL'] = document.URL;
+        params['First Touch Source'] = _getTouchSource();
+        return params;
+    };
+
+    /**
+     * Save last utm params and referrer
+     *
+     * @private
+     * @name Main#_lastTouchUTMTags
+     * @function
+     */
+    var _lastTouchUTMTags = function () {
+        var params = {};
+        if(!Cookie.get(Constants.cookieFirst)){
+            params = $.extend(params, _getFirstParams());
+            Cookie.set(Constants.cookieFirst, true, 365);
+        }
+        logger.debug('Obtaining params last');
+        params = $.extend(params, _getLastParams());
+        window.mixpanel.people.set(params);
+        window.mixpanel.register(params);
+
     };
 
     /**
@@ -320,12 +482,15 @@
      * @name Main#_startTracking
      * @function
      */
-    var _startTracking = function() {
+    var _startTracking = function () {
         logger.debug('Starting tracking');
         try {
+            if(!document.referrer || document.referrer.indexOf(config.ownerDomain) < 0){ // We not come from the same domain
+                _lastTouchUTMTags();
+            }
             _sendPageViewEvent();
             _searchTrackings();
-        } catch (e) {
+        } catch(e) {
             console.error(e);
         }
 
@@ -335,18 +500,19 @@
      * Init function
      *
      * @name Main#init
-     * @param {String} token token authentication
+     * @param {Object} config url of
      * @function
      */
-    var init = function() {
-        if ($ === undefined) {
+    var init = function (initialConfig) {
+        config = initialConfig;
+        if($ === undefined) {
             throw new Error('Jquery not load');
         }
-        if (window.mixpanel === undefined) {
+        if(window.mixpanel === undefined) {
             throw new Error('window.Mixpanel not load');
         }
         var levelLogger = 0;
-        if($('body').data('env') && $('body').data('env').toLowerCase() !== 'production'){
+        if($('body').data('env') && $('body').data('env').toLowerCase() !== 'production') {
             levelLogger = 3;
         }
 
@@ -367,7 +533,7 @@
      * @param {Object} attrs Attributes to send
      * @function
      */
-    var track = function(event, attrs){
+    var track = function (event, attrs) {
         var objectToSend = $.extend({}, defaultData, attrs);
         window.mixpanel.track(event, objectToSend);
     };
@@ -380,8 +546,8 @@
      * @param {String} unique_id A string that uniquely identifies a user
      * @function
      */
-    var identify = function(unique_id){
-        window.mixpanel.identify(unique_id);
+    var identify = function (uniqueId) {
+        window.mixpanel.identify(uniqueId);
     };
 
     /**
@@ -393,7 +559,7 @@
      * @param {String} original The current identifier being used for this user
      * @function
      */
-    var alias = function(alias, original){
+    var alias = function (alias, original) {
         window.mixpanel.alias(alias, original);
     };
 
@@ -405,7 +571,7 @@
      * @param {Object} Properties
      * @function
      */
-    var set = function(properties){
+    var set = function (properties) {
         window.mixpanel.people.set(properties);
     };
 
@@ -413,6 +579,7 @@
         init: init,
         track: track,
         extractDataForm: extractDataForm,
+        getMixpanelCookie: Cookie.getMixpanelCookie,
         identify: identify,
         alias: alias,
         people: {
