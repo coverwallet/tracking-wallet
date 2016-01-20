@@ -448,7 +448,6 @@
 
     var _getFirstParams = function () {
         var params = {};
-        params['UTM Term'] = getQueryParam(document.URL, 'utm_term');
         params['First state'] = getQueryParam(document.URL, 'state');
         params['First Referrer'] = document.referrer;
         params['First URL'] = document.URL;
