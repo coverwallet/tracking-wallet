@@ -3,7 +3,7 @@
  * @name Main
  * @namespace
  */
-(function (window, $) {
+(function (window) {
 
     /**
      * @name Logger
@@ -266,9 +266,9 @@
      */
     var extractDataForm = function (el) {
         var values = {};
-        $.each(el.find('input, select'), function (i, field) {
-            if($(field).data('tw-name')) {
-                values[$(field).data('tw-name')] = $(field).val();
+        window.$.each(el.find('input, select'), function (i, field) {
+            if(window.$(field).data('tw-name')) {
+                values[window.$(field).data('tw-name')] = window.$(field).val();
             }
         });
         return values;
@@ -287,7 +287,7 @@
         if(el.prop('tagName').toLowerCase() === 'form') {
             window.mixpanel.track_forms('#' + _getSelector(el), _capitalize(Constants.submitEvent), function () { // jshint ignore:line
                 var values = extractDataForm(el);
-                return $.extend({}, attrs, values);
+                return window.$.extend({}, attrs, values);
             });
         } else {
             console.error('submit event if only allowed in form tags');
@@ -304,7 +304,7 @@
      */
     var _bindTracking = function (el) {
         var attrs = _getTrackDataOfElem(el);
-        attrs = $.extend({}, defaultData, attrs);
+        attrs = window.$.extend({}, defaultData, attrs);
         if(attrs.event) {
             var eventName = attrs.event;
             delete attrs.event;
@@ -332,11 +332,11 @@
      */
     var _searchTrackings = function () {
         var lengthElems, i = null;
-        var elements = $('[' + Constants.nameTrackingEventData + ']');
+        var elements = window.$('[' + Constants.nameTrackingEventData + ']');
         if(elements && elements.length > 0) {
             lengthElems = elements.length;
             for(i = 0; i < lengthElems; i++) {
-                _bindTracking($(elements[i]));
+                _bindTracking(window.$(elements[i]));
             }
         }
     };
@@ -350,7 +350,7 @@
      */
     var _sendPageViewEvent = function () {
         logger.debug('Sending page view event');
-        var el = $('body');
+        var el = window.$('body');
         var attrs = _getTrackDataOfElem(el);
         //saving default data
         defaultData = attrs;
@@ -415,7 +415,7 @@
         } else if(_isReferral()) {
             return 'referral';
         } else if(_isDirect()) {
-            return '$direct';
+            return 'window.$direct';
         }
     };
     var formatUTM = function (utm) {
@@ -466,11 +466,11 @@
     var _lastTouchUTMTags = function () {
         var params = {};
         if(!Cookie.get(Constants.cookieFirst)){
-            params = $.extend(params, _getFirstParams());
+            params = window.$.extend(params, _getFirstParams());
             Cookie.set(Constants.cookieFirst, true, 365);
         }
         logger.debug('Obtaining params last');
-        params = $.extend(params, _getLastParams());
+        params = window.$.extend(params, _getLastParams());
         window.mixpanel.people.set(params);
         window.mixpanel.register(params);
 
@@ -506,17 +506,17 @@
      */
     var init = function (initialConfig) {
         config = {};
-        if($ === undefined) {
+        if(window.$ === undefined) {
             throw new Error('Jquery not load');
         }
         if(window.mixpanel === undefined) {
             throw new Error('window.Mixpanel not load');
         }
         var levelLogger = 0;
-        if($('body').data('env') && $('body').data('env').toLowerCase() !== 'production') {
+        if(window.$('body').data('env') && window.$('body').data('env').toLowerCase() !== 'production') {
             levelLogger = 3;
         }
-        config.ownerDomain = $('body').data(Constants.prefixNameTrackingOwnerDomain);
+        config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain);
 
         logger = new Logger(levelLogger);
         window.mixpanel.set_config({ // jshint ignore:line
@@ -536,7 +536,7 @@
      * @function
      */
     var track = function (event, attrs) {
-        var objectToSend = $.extend({}, defaultData, attrs);
+        var objectToSend = window.$.extend({}, defaultData, attrs);
         window.mixpanel.track(event, objectToSend);
     };
 
