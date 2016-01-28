@@ -589,4 +589,4 @@
         }
     };
 
-}(window, jQuery));
+}(window));
