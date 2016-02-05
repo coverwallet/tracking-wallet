@@ -139,7 +139,8 @@
         clickEvent: 'click',
         submitEvent: 'submit',
         defaultTimeout: 300,
-        cookieFirst: 'CW-FirstTime'
+        cookieFirst: 'CW-FirstTime',
+        sendPageView: 'send-page-view'
     };
     var defaultData = {};
     var logger = null;
@@ -489,7 +490,9 @@
             if(!document.referrer || document.referrer.indexOf(config.ownerDomain) < 0){ // We not come from the same domain
                 _lastTouchUTMTags();
             }
-            _sendPageViewEvent();
+            if(config.sendPageView === undefined || config.sendPageView === 'true'){
+                _sendPageViewEvent();
+            }
             _searchTrackings();
         } catch(e) {
             console.error(e);
@@ -501,10 +504,9 @@
      * Init function
      *
      * @name Main#init
-     * @param {Object} config url of
      * @function
      */
-    var init = function (initialConfig) {
+    var init = function () {
         config = {};
         if(window.$ === undefined) {
             throw new Error('Jquery not load');
@@ -517,6 +519,7 @@
             levelLogger = 3;
         }
         config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain);
+        config.sendPageView =  window.$('body').data(Constants.sendPageView);
 
         logger = new Logger(levelLogger);
         window.mixpanel.set_config({ // jshint ignore:line
