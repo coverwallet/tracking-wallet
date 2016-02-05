@@ -415,7 +415,7 @@
         } else if(_isReferral()) {
             return 'referral';
         } else if(_isDirect()) {
-            return 'window.$direct';
+            return '$direct';
         }
     };
     var formatUTM = function (utm) {
