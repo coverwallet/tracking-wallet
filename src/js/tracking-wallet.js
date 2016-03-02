@@ -546,7 +546,7 @@
      * @name Main#init
      * @function
      */
-    var init = function (defaultOwnerDomain) {
+    var init = function (options) {
         config = {};
         if(window.$ === undefined) {
             throw new Error('Jquery not load');
@@ -558,7 +558,7 @@
         if(window.$('body').data('env') && window.$('body').data('env').toLowerCase() !== 'production') {
           levelLogger = 3;
         }
-        config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain) || defaultOwnerDomain;
+        config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain) || options.defaultOwnerDomain;
         config.sendPageView =  window.$('body').data(Constants.sendPageView);
 
         logger = new Logger(levelLogger);
