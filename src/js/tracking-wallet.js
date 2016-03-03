@@ -494,6 +494,7 @@
         params['First Entry URL'] = document.URL;
         params['First Touch Source'] = _getTouchSource();
         params['First Entry Device'] = _getDeviceType();
+        params['Domain name'] = (config.domainName || window.location.host.match(/\.?([^.]+)\.[^.]+.?$/)[1]);
         return params;
     };
 
@@ -546,8 +547,8 @@
      * @name Main#init
      * @function
      */
-    var init = function (options) {
-        config = {};
+    var init = function (initialOptions) {
+        config = Object.assign({}, initialOptions);
         if(window.$ === undefined) {
             throw new Error('Jquery not load');
         }
@@ -558,7 +559,7 @@
         if(window.$('body').data('env') && window.$('body').data('env').toLowerCase() !== 'production') {
           levelLogger = 3;
         }
-        config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain) || options.defaultOwnerDomain;
+        config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain);
         config.sendPageView =  window.$('body').data(Constants.sendPageView);
 
         logger = new Logger(levelLogger);
