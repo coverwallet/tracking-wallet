@@ -419,6 +419,7 @@
             return '$direct';
         }
     };
+
     var formatUTM = function (utm) {
         var parts = utm.split('_');
         if (parts.length > 1){
@@ -428,7 +429,6 @@
         }
 
     };
-
 
     var _getDeviceType = function () {
       var check = false;
@@ -527,13 +527,17 @@
     var _startTracking = function () {
         logger.debug('Starting tracking');
         try {
+
           if (!document.referrer || document.referrer.indexOf(config.domainName) < 0) { // We not come from the same domain
-              _lastTouchUTMTags();
+            _lastTouchUTMTags();
           }
-          if (config.sendPageView === undefined || config.sendPageView === 'true') {
-              _sendPageViewEvent();
+
+          if (!config.hasOwnProperty('sendPageView') || config.sendPageView === true) {
+            _sendPageViewEvent();
           }
+
           _searchTrackings();
+
         } catch(e) {
           console.error(e);
         }
@@ -545,8 +549,10 @@
      *
      * @name Main#init
      * @function
+     * @param {Object} initialOptions
      */
     var init = function (initialOptions) {
+
         config = Object.assign({}, initialOptions);
         var levelLogger = 0;
 
@@ -566,11 +572,14 @@
           config.domainName = window.location.host.match(/\.?([^.]+)\.[^.]+.?$/)[1];
         }
 
-        config.sendPageView = window.$('body').data(Constants.sendPageView);
+        if (!config.hasOwnProperty('sendPageView') || config.sendPageView == null) {
+          config.sendPageView = true;
+        }
+
         logger = new Logger(levelLogger);
 
         window.mixpanel.set_config({ // jshint ignore:line
-            debug: levelLogger === 3
+          debug: levelLogger === 3
         });
 
         _startTracking();
