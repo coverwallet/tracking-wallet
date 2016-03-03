@@ -527,15 +527,15 @@
     var _startTracking = function () {
         logger.debug('Starting tracking');
         try {
-            if(!document.referrer || document.referrer.indexOf(config.ownerDomain) < 0){ // We not come from the same domain
-                _lastTouchUTMTags();
-            }
-            if(config.sendPageView === undefined || config.sendPageView === 'true'){
-                _sendPageViewEvent();
-            }
-            _searchTrackings();
+          if (!document.referrer || document.referrer.indexOf(config.domainName) < 0) { // We not come from the same domain
+              _lastTouchUTMTags();
+          }
+          if (config.sendPageView === undefined || config.sendPageView === 'true') {
+              _sendPageViewEvent();
+          }
+          _searchTrackings();
         } catch(e) {
-            console.error(e);
+          console.error(e);
         }
 
     };
@@ -546,27 +546,34 @@
      * @name Main#init
      * @function
      */
-    var init = function (options) {
-        config = {};
-        if(window.$ === undefined) {
-            throw new Error('Jquery not load');
-        }
-        if(window.mixpanel === undefined) {
-            throw new Error('window.Mixpanel not load');
-        }
+    var init = function (initialOptions) {
+        config = Object.assign({}, initialOptions);
         var levelLogger = 0;
-        if(window.$('body').data('env') && window.$('body').data('env').toLowerCase() !== 'production') {
+
+        if (window.$ === undefined) {
+          throw new Error('Jquery not load');
+        }
+
+        if (window.mixpanel === undefined) {
+          throw new Error('window.Mixpanel not load');
+        }
+
+        if (window.$('body').data('env') && window.$('body').data('env').toLowerCase() !== 'production') {
           levelLogger = 3;
         }
-        config.ownerDomain = window.$('body').data(Constants.prefixNameTrackingOwnerDomain) || options.defaultOwnerDomain;
-        config.sendPageView =  window.$('body').data(Constants.sendPageView);
 
+        if (!config.hasOwnProperty('domainName') || config.domainName == null) {
+          config.domainName = window.location.host.match(/\.?([^.]+)\.[^.]+.?$/)[1];
+        }
+
+        config.sendPageView = window.$('body').data(Constants.sendPageView);
         logger = new Logger(levelLogger);
+
         window.mixpanel.set_config({ // jshint ignore:line
             debug: levelLogger === 3
         });
-        _startTracking();
 
+        _startTracking();
 
     };
 
