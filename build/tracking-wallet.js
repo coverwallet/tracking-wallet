@@ -514,7 +514,7 @@
      */
     var init = function (initialOptions) {
 
-        config = Object.assign({}, initialOptions);
+        config = initialOptions || {};
         var levelLogger = 0;
 
         if (window.$ === undefined) {
