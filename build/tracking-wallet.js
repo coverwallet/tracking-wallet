@@ -430,8 +430,15 @@
 
     };
 
-    var _getLastParams = function () {
+    var _unregisterLastParams = function () {
+        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'];
+        for(var index = 0; index < utms.length; ++index) {
+            window.mixpanel.unregister('Last ' + utms[index]);
+        }
+    };
 
+    var _getLastParams = function () {
+        _unregisterLastParams();
         var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' '),
             kw = '',
             params = {};
