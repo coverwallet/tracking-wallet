@@ -431,10 +431,15 @@
     };
 
     var _unregisterLastParams = function () {
-        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'];
+        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'],
+            params = {};
         for(var index = 0; index < utms.length; ++index) {
-            window.mixpanel.unregister('Last ' + utms[index]);
+            var prop = 'Last ' + utms[index];
+            window.mixpanel.unregister(prop);
+            params[prop] = '';
         }
+        // Reset People's Last params
+        window.mixpanel.people.set(params);
     };
 
     var _getLastParams = function () {
@@ -452,7 +457,7 @@
         params['Last US State'] = getQueryParam(document.URL, 'state');
         params['Last Referrer'] = document.referrer;
         params['Last Entry URL'] = document.URL;
-        params['Last Touch Source'] = _getTouchSource();
+        params['Last Touch Source'] = e_getTouchSource();
         return params;
     };
 
