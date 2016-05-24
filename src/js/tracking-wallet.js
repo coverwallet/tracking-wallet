@@ -457,7 +457,7 @@
         params['Last US State'] = getQueryParam(document.URL, 'state');
         params['Last Referrer'] = document.referrer;
         params['Last Entry URL'] = document.URL;
-        params['Last Touch Source'] = e_getTouchSource();
+        params['Last Touch Source'] = _getTouchSource();
         return params;
     };
 
