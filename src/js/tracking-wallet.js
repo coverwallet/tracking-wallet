@@ -436,7 +436,7 @@
         for(var index = 0; index < utms.length; ++index) {
             var prop = 'Last ' + utms[index];
             window.mixpanel.unregister(prop);
-            params[prop] = '';
+            params[prop] = '-';
         }
         // Reset People's Last params
         window.mixpanel.people.set(params);
