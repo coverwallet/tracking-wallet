@@ -355,7 +355,6 @@
         var attrs = _getTrackDataOfElem(el);
         //saving default data
         defaultData = attrs;
-        window.mixpanel.track(Constants.pageViewEvent, attrs);
     };
 
     var getQueryParam = function (url, param) {
@@ -434,6 +433,7 @@
         var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'];
         for(var index = 0; index < utms.length; ++index) {
             window.mixpanel.unregister('Last ' + utms[index]);
+            //window.mixpanel.people.set({ 'Last ' + utms[index]: '' });
         }
     };
 
