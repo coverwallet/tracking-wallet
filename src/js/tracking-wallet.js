@@ -443,12 +443,12 @@
         window.mixpanel.people.set(params);
     };
 
-    var _getParams = function (params) {
-        params['Last US State'] = getQueryParam(document.URL, 'state');
-        params['Last Referrer'] = document.referrer;
-        params['Last Entry URL'] = document.URL;
-        params['Last Touch Source'] = _getTouchSource();
-        params['Last Partner'] = Cookie.get(Constants.cookiePartner);
+    var _getParams = function (prefix, params) {
+        params[prefix + 'US State']     = getQueryParam(document.URL, 'state');
+        params[prefix + 'Referrer']     = document.referrer;
+        params[prefix + 'Entry URL']    = document.URL;
+        params[prefix + 'Touch Source'] = _getTouchSource();
+        params[prefix + 'Partner']      = Cookie.get(Constants.cookiePartner);
         return params;
     };
 
@@ -456,19 +456,20 @@
         _unregisterLastParams();
         var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' '),
             kw = '',
+            prefix = 'Last ',
             params = {};
         var index;
         for(index = 0; index < campaignKeywords.length; ++index) {
             kw = getQueryParam(document.URL, campaignKeywords[index]);
             if(kw.length) {
-                params['Last ' + formatUTM(campaignKeywords[index])] = kw;
+                params[prefix + formatUTM(campaignKeywords[index])] = kw;
             }
         }
-        return _getParams(params);
+        return _getParams(prefix, params);
     };
 
     var _getFirstParams = function () {
-        return _getParams({});
+        return _getParams('First ', {});
     };
 
     /**
