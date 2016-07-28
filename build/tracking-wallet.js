@@ -140,6 +140,7 @@
         submitEvent: 'submit',
         defaultTimeout: 300,
         cookieFirst: 'CW-FirstTime',
+        cookiePartner: 'partner',
         sendPageView: 'send-page-view'
     };
     var defaultData = {};
@@ -431,38 +432,43 @@
     };
 
     var _unregisterLastParams = function () {
-        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'];
+        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'],
+            params = {};
         for(var index = 0; index < utms.length; ++index) {
-            window.mixpanel.unregister('Last ' + utms[index]);
+            var prop = 'Last ' + utms[index];
+            window.mixpanel.unregister(prop);
+            params[prop] = '-';
         }
+        // Reset People's Last params
+        window.mixpanel.people.set(params);
+    };
+
+    var _getParams = function (prefix, params) {
+        params[prefix + 'Referrer']     = document.referrer;
+        params[prefix + 'Entry URL']    = document.URL;
+        params[prefix + 'Touch Source'] = _getTouchSource();
+        params[prefix + 'Partner']      = Cookie.get(Constants.cookiePartner);
+        return params;
     };
 
     var _getLastParams = function () {
         _unregisterLastParams();
         var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' '),
             kw = '',
+            prefix = 'Last ',
             params = {};
         var index;
         for(index = 0; index < campaignKeywords.length; ++index) {
             kw = getQueryParam(document.URL, campaignKeywords[index]);
             if(kw.length) {
-                params['Last ' + formatUTM(campaignKeywords[index])] = kw;
+                params[prefix + formatUTM(campaignKeywords[index])] = kw;
             }
         }
-        params['Last US State'] = getQueryParam(document.URL, 'state');
-        params['Last Referrer'] = document.referrer;
-        params['Last Entry URL'] = document.URL;
-        params['Last Touch Source'] = _getTouchSource();
-        return params;
+        return _getParams(prefix, params);
     };
 
     var _getFirstParams = function () {
-        var params = {};
-        params['First US State'] = getQueryParam(document.URL, 'state');
-        params['First Referrer'] = document.referrer;
-        params['First Entry URL'] = document.URL;
-        params['First Touch Source'] = _getTouchSource();
-        return params;
+        return _getParams('First ', {});
     };
 
     /**
