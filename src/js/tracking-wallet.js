@@ -444,7 +444,6 @@
     };
 
     var _getParams = function (prefix, params) {
-        params[prefix + 'US State']     = getQueryParam(document.URL, 'state');
         params[prefix + 'Referrer']     = document.referrer;
         params[prefix + 'Entry URL']    = document.URL;
         params[prefix + 'Touch Source'] = _getTouchSource();
