@@ -140,6 +140,7 @@
         submitEvent: 'submit',
         defaultTimeout: 300,
         cookieFirst: 'CW-FirstTime',
+        cookiePartner: 'partner',
         sendPageView: 'send-page-view'
     };
     var defaultData = {};
@@ -442,11 +443,19 @@
         window.mixpanel.people.set(params);
     };
 
+    var _getParams = function (params) {
+        params['Last US State'] = getQueryParam(document.URL, 'state');
+        params['Last Referrer'] = document.referrer;
+        params['Last Entry URL'] = document.URL;
+        params['Last Touch Source'] = _getTouchSource();
+        params['Last Partner'] = Cookie.get(Constants.cookiePartner);
+        return params;
+    };
+
     var _getLastParams = function () {
         _unregisterLastParams();
         var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' '),
-            kw = '',
-            params = {};
+            kw = '';
         var index;
         for(index = 0; index < campaignKeywords.length; ++index) {
             kw = getQueryParam(document.URL, campaignKeywords[index]);
@@ -454,20 +463,11 @@
                 params['Last ' + formatUTM(campaignKeywords[index])] = kw;
             }
         }
-        params['Last US State'] = getQueryParam(document.URL, 'state');
-        params['Last Referrer'] = document.referrer;
-        params['Last Entry URL'] = document.URL;
-        params['Last Touch Source'] = _getTouchSource();
-        return params;
+        return _getParams(params);
     };
 
     var _getFirstParams = function () {
-        var params = {};
-        params['First US State'] = getQueryParam(document.URL, 'state');
-        params['First Referrer'] = document.referrer;
-        params['First Entry URL'] = document.URL;
-        params['First Touch Source'] = _getTouchSource();
-        return params;
+        return _getParams({});
     };
 
     /**
