@@ -455,7 +455,8 @@
     var _getLastParams = function () {
         _unregisterLastParams();
         var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(' '),
-            kw = '';
+            kw = '',
+            params = {};
         var index;
         for(index = 0; index < campaignKeywords.length; ++index) {
             kw = getQueryParam(document.URL, campaignKeywords[index]);
