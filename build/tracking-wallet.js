@@ -432,7 +432,8 @@
     };
 
     var _unregisterLastParams = function () {
-        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State', 'Referrer', 'Entry URL', 'Touch Source'],
+        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term',
+            'Referrer', 'Entry URL', 'Touch Source', 'Partner'],
             params = {};
         for(var index = 0; index < utms.length; ++index) {
             var prop = 'Last ' + utms[index];
@@ -447,7 +448,7 @@
         params[prefix + 'Referrer']     = document.referrer;
         params[prefix + 'Entry URL']    = document.URL;
         params[prefix + 'Touch Source'] = _getTouchSource();
-        params[prefix + 'Partner']      = Cookie.get(Constants.cookiePartner);
+        params[prefix + 'Partner']      = Cookie.get(Constants.cookiePartner) || 'CoverWallet';
         return params;
     };
 
