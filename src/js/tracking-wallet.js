@@ -140,7 +140,7 @@
         submitEvent: 'submit',
         defaultTimeout: 300,
         cookieFirst: 'CW-FirstTime',
-        cookiePartner: 'partner',
+        cookieLastPartner: 'last-partner',
         sendPageView: 'send-page-view'
     };
     var defaultData = {};
@@ -448,7 +448,7 @@
         params[prefix + 'Referrer']     = document.referrer;
         params[prefix + 'Entry URL']    = document.URL;
         params[prefix + 'Touch Source'] = _getTouchSource();
-        params[prefix + 'Partner']      = Cookie.get(Constants.cookiePartner) || 'CoverWallet';
+        params[prefix + 'Partner']      = Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
         return params;
     };
 
