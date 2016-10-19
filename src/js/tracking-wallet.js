@@ -446,7 +446,6 @@
 
     var _getParams = function (prefix, params) {
         params[prefix + 'Referrer']     = document.referrer;
-        params[prefix + 'Entry URL']    = document.URL;
         params[prefix + 'Touch Source'] = _getTouchSource();
         params[prefix + 'Partner']      = Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
         return params;
