@@ -446,7 +446,6 @@
 
     var _getParams = function (prefix, params) {
         params[prefix + 'Referrer']     = document.referrer;
-        params[prefix + 'Entry URL']    = document.URL;
         params[prefix + 'Touch Source'] = _getTouchSource();
         params[prefix + 'Partner']      = Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
         return params;
@@ -503,7 +502,7 @@
         logger.debug('Starting tracking');
         try {
 
-          if (!document.referrer || document.referrer.indexOf(config.domainName) < 0) { // We not come from the same domain
+          if (config.calcLastAttrs && (!document.referrer || document.referrer.indexOf(config.domainName) < 0)) {
             _lastTouchUTMTags();
           }
 
@@ -549,6 +548,10 @@
 
         if (!config.hasOwnProperty('sendPageView') || config.sendPageView === null) {
           config.sendPageView = true;
+        }
+        
+        if (!config.hasOwnProperty('calcLastAttrs')) {
+          config.calcLastAttrs = true;
         }
 
         logger = new Logger(levelLogger);

@@ -502,7 +502,7 @@
         logger.debug('Starting tracking');
         try {
 
-          if (!document.referrer || document.referrer.indexOf(config.domainName) < 0) { // We not come from the same domain
+          if (config.calcLastAttrs && (!document.referrer || document.referrer.indexOf(config.domainName) < 0)) {
             _lastTouchUTMTags();
           }
 
@@ -548,6 +548,10 @@
 
         if (!config.hasOwnProperty('sendPageView') || config.sendPageView === null) {
           config.sendPageView = true;
+        }
+        
+        if (!config.hasOwnProperty('calcLastAttrs')) {
+          config.calcLastAttrs = true;
         }
 
         logger = new Logger(levelLogger);
