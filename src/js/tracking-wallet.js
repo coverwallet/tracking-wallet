@@ -487,7 +487,8 @@
         var params = {};
         if(!Cookie.get(Constants.cookieFirst)){
             params = window.$.extend(params, _getFirstParams());
-            var cookieDomain = window.location.host.split('.').slice(-2).join('.');
+            var subdomains = window.location.host.split('.');
+            var cookieDomain = subdomains.length > 2 ? subdomains.slice(-2).join('.') : window.location.host;
             Cookie.set(Constants.cookieFirst, true, 365, cookieDomain);
         }
         logger.debug('Obtaining params last');
