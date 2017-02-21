@@ -361,7 +361,6 @@
         var attrs = _getTrackDataOfElem(el);
         //saving default data
         defaultData = attrs;
-        window.mixpanel.track(Constants.pageViewEvent, attrs);
     };
 
     var getQueryParam = function (url, param) {
