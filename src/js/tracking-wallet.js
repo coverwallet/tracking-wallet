@@ -118,7 +118,7 @@
         return null;
     };
 
-    Cookie.set = function (name, value, days) {
+    Cookie.set = function (name, value, days, domain) {
         var expires;
         if(days) {
             var date = new Date();
@@ -127,7 +127,12 @@
         } else {
             expires = '';
         }
-        document.cookie = name + '=' + value + expires + '; path=/';
+        if (domain) {
+            var domainOption = ';domain=' + domain;
+        } else {
+            domainOption = '';
+        }
+        document.cookie = name + '=' + value + expires + '; path=/' + domainOption;
     };
 
     var Constants = {
@@ -482,7 +487,9 @@
         var params = {};
         if(!Cookie.get(Constants.cookieFirst)){
             params = window.$.extend(params, _getFirstParams());
-            Cookie.set(Constants.cookieFirst, true, 365);
+            var subdomains = window.location.host.split('.');
+            var cookieDomain = subdomains.length > 2 ? subdomains.slice(-2).join('.') : window.location.host;
+            Cookie.set(Constants.cookieFirst, true, 365, cookieDomain);
         }
         logger.debug('Obtaining params last');
         params = window.$.extend(params, _getLastParams());
@@ -538,7 +545,9 @@
           throw new Error('window.Mixpanel not load');
         }
 
-        if (window.$('body').data('env') && window.$('body').data('env').toLowerCase() !== 'production') {
+        config.env = window.$('body').data('env') ? window.$('body').data('env').toLowerCase() : 'production';
+
+        if (config.env !== 'production') {
           levelLogger = 3;
         }
 
