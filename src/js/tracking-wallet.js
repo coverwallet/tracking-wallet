@@ -439,7 +439,7 @@
     var _unregisterLastParams = function () {
         var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term',
                     'Touch Source', 'Partner'];
-        
+
         for(var index = 0; index < utms.length; ++index) {
             var prop = 'Last ' + utms[index];
             window.mixpanel.unregister(prop);
@@ -495,10 +495,10 @@
     };
 
     /**
-     * Save last utm params and referrer
+     * Set people params
      *
      * @private
-     * @name Main#_lastTouchUTMTags
+     * @name Main#_peopleSetParams
      * @function
      */
     var _peopleSetParams = function () {
