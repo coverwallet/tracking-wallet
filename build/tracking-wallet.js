@@ -437,20 +437,16 @@
     };
 
     var _unregisterLastParams = function () {
-        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term', 'US State',
-            'Referrer', 'Entry URL', 'Touch Source', 'Partner'],
-            params = {};
+        var utms = ['UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Content', 'UTM Term',
+                    'Touch Source', 'Partner'];
+        
         for(var index = 0; index < utms.length; ++index) {
             var prop = 'Last ' + utms[index];
             window.mixpanel.unregister(prop);
-            params[prop] = '-';
         }
-        // Reset People's Last params
-        window.mixpanel.people.set(params);
     };
 
     var _getParams = function (prefix, params) {
-        params[prefix + 'Referrer']     = document.referrer;
         params[prefix + 'Touch Source'] = _getTouchSource();
         params[prefix + 'Partner']      = Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
         return params;
@@ -493,9 +489,20 @@
         }
         logger.debug('Obtaining params last');
         params = window.$.extend(params, _getLastParams());
-        window.mixpanel.people.set(params);
+
         window.mixpanel.register(params);
 
+    };
+
+    /**
+     * Save last utm params and referrer
+     *
+     * @private
+     * @name Main#_lastTouchUTMTags
+     * @function
+     */
+    var _peopleSetParams = function () {
+        window.mixpanel.people.set(_getFirstParams());
     };
 
     /**
@@ -512,6 +519,8 @@
           if (config.calcLastAttrs && (!document.referrer || document.referrer.indexOf(config.domainName) < 0)) {
             _lastTouchUTMTags();
           }
+
+          _peopleSetParams();
 
           if (!config.hasOwnProperty('sendPageView') || config.sendPageView === true) {
             _sendPageViewEvent();
