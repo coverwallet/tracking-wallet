@@ -1,6 +1,4 @@
 module.exports = {
-
-	buildDir:'build',
-	devDir: 'src'
-
+  buildDir: 'build',
+  devDir: 'src',
 };
