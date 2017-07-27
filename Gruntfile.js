@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         success: true,
         duration: 3
       }
-    }, // maximum number of notifications from jshint output // defaults to the name in package.json, or will use project directory's name // whether successful grunt executions should be notified automatically // the duration of notification in seconds, for `notify-send only
+    },
     clean: ['<%= buildDir %>'],
     jshint: {
       options: {
