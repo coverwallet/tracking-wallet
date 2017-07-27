@@ -1,24 +1,33 @@
 <html>
-    <head>
-        <!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
-mixpanel.init("");</script><!-- end Mixpanel -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    </head>
-    <body data-tw-app='test-dev' data-tw-page="testPage" data-tw-section="Home section"  data-env="development">
-        <a href="./index.html"id="to_index" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
-        <form action="./index.html" method="GET" id="myForm" data-tw-event="submit" data-tw-form-name="pedir Nombre">
-            <label for="name">Nombre</label>
-            <input type="text" name="name" id="name" data-tw-event="click" data-tw-name="name">
-            <input type="submit" data-tw-event="click" id="submit_myform"/>
-        </form>
-        <script type="text/javascript" src="js/tracking-wallet.js"></script>
-        <script type="text/javascript">
-            window.trackingWallet.init( 3);
 
-            document.addEventListener("DOMContentLoaded", function() {
-                //alert(mixpanel.get_distinct_id());
-            });
-        </script>
-    </body>
+<head>
+  <script>
+    !function () {
+      var analytics = window.analytics = window.analytics || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
+        analytics.invoked = !0; analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on"]; analytics.factory = function (t) { return function () { var e = Array.prototype.slice.call(arguments); e.unshift(t); analytics.push(e); return analytics } }; for (var t = 0; t < analytics.methods.length; t++) { var e = analytics.methods[t]; analytics[e] = analytics.factory(e) } analytics.load = function (t) { var e = document.createElement("script"); e.type = "text/javascript"; e.async = !0; e.src = ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js"; var n = document.getElementsByTagName("script")[0]; n.parentNode.insertBefore(e, n) }; analytics.SNIPPET_VERSION = "4.0.0";
+        analytics.load("AnyxQc63PqJaoMsqlxSRFraqrfsuZr2i");
+        analytics.page();
+      }
+    }();
+  </script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+
+<body data-tw-app='test-dev' data-tw-page="testPage" data-tw-section="Home section" data-env="development">
+  <a href="./index.html" id="to_index" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
+  <form action="./index.html" method="GET" id="myForm" data-tw-event="submit" data-tw-form-name="pedir Nombre">
+    <label for="name">Nombre</label>
+    <input type="text" name="name" id="name" data-tw-event="click" data-tw-name="name">
+    <input type="submit" data-tw-event="click" id="submit_myform" />
+  </form>
+  <script type="text/javascript" src="js/tracking-wallet.js"></script>
+  <script type="text/javascript">
+    window.trackingWallet.init();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      //alert(mixpanel.get_distinct_id());
+    });
+  </script>
+</body>
+
 </html>

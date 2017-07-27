@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * @name Main
  * @namespace
@@ -100,16 +101,6 @@
      * Utility for manage cookie
      */
   var Cookie = function() {};
-  Cookie.getMixpanelCookie = function() {
-    if (document.cookie.length > 0) {
-      var cName = document.cookie.match(/mp_\w*_mixpanel/g);
-      if (cName && cName.length > 0) {
-        var value = Cookie.get(cName[0]);
-        return JSON.parse(value);
-      }
-    }
-    return null;
-  };
 
   Cookie.get = function(cName) {
     if (document.cookie.length > 0) {
@@ -254,11 +245,7 @@
      */
   var _bindClickEvent = function(el, attrs) {
     if (el.prop('tagName').toLowerCase() === 'a') {
-      window.mixpanel.track_links(
-        '#' + _getSelector(el),
-        _capitalize(Constants.clickEvent),
-        attrs
-      ); // jshint ignore:line
+      window.analytics.trackLink(el, _capitalize(Constants.clickEvent), attrs);
       logger.debug('Bind event click in ' + _getSelector(el));
     } else {
       var click = function(e) {
@@ -267,7 +254,7 @@
         setTimeout(function() {
           _doClickElement(el, click);
         }, Constants.defaultTimeout);
-        window.mixpanel.track(_capitalize(Constants.clickEvent), attrs);
+        window.analytics.track(_capitalize(Constants.clickEvent), attrs);
       };
       el.on('click', click);
     }
@@ -302,8 +289,8 @@
      */
   var _bindSubmitEvent = function(el, attrs) {
     if (el.prop('tagName').toLowerCase() === 'form') {
-      window.mixpanel.track_forms(
-        '#' + _getSelector(el),
+      window.analytics.trackForm(
+        el,
         _capitalize(Constants.submitEvent),
         function() {
           // jshint ignore:line
@@ -377,7 +364,7 @@
     var attrs = _getTrackDataOfElem(el);
     //saving default data
     defaultData = attrs;
-    window.mixpanel.track(Constants.pageViewEvent, attrs);
+    window.analytics.track(Constants.pageViewEvent, attrs);
   };
 
   var getQueryParam = function(url, param) {
@@ -536,17 +523,6 @@
   };
 
   /**
-     * Set people params
-     *
-     * @private
-     * @name Main#_peopleSetParams
-     * @function
-     */
-  var _peopleSetParams = function() {
-    window.mixpanel.people.set(_getFirstParams());
-  };
-
-  /**
      * Start tracking logic
      *
      * @private
@@ -563,7 +539,7 @@
         _lastTouchUTMTags();
       }
 
-      _peopleSetParams();
+      window.analytics.identify();
 
       if (
         !config.hasOwnProperty('sendPageView') ||
@@ -589,12 +565,8 @@
     config = initialOptions || {};
     var levelLogger = 0;
 
-    if (window.$ === undefined) {
-      throw new Error('Jquery not load');
-    }
-
-    if (window.mixpanel === undefined) {
-      throw new Error('window.Mixpanel not load');
+    if (window.analytics === undefined) {
+      throw new Error('window.analytics not load');
     }
 
     config.env = window.$('body').data('env')
@@ -622,10 +594,9 @@
 
     logger = new Logger(levelLogger);
 
-    window.mixpanel.set_config({
-      // jshint ignore:line
-      debug: levelLogger === 3
-    });
+    if (levelLogger === 0) {
+      window.analytics.debug();
+    }
 
     _startTracking();
   };
@@ -640,53 +611,39 @@
      */
   var track = function(event, attrs) {
     var objectToSend = window.$.extend({}, defaultData, attrs);
-    window.mixpanel.track(event, objectToSend);
+    window.analytics.track(event, objectToSend);
   };
 
   /**
      * Identify a user with a unique ID. All subsequent actions caused by this user will be tied to this unique ID.
-     * https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.identify
+     * https://segment.com/docs/spec/identify/
      *
      * @name Main#identify
      * @param {String} unique_id A string that uniquely identifies a user
      * @function
      */
-  var identify = function(uniqueId) {
-    window.mixpanel.identify(uniqueId);
+  var identify = function(uniqueId, traits) {
+    logger.debug('Identifying user with id ' + uniqueId);
+    window.analytics.identify(uniqueId, traits);
   };
 
   /**
-     * Create an alias, which Mixpanel will use to link two distinct_ids going forward
-     * https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.alias
+     * Create an alias, which Segment will use to link two distinct_ids going forward
+     * https://segment.com/docs/spec/track/
      *
      * @name Main#alias
-     * @param {String} alias A unique identifier that you want to use for this user in the future
-     * @param {String} original The current identifier being used for this user
+     * @param {String} id A unique identifier that you want to use for this user in the future
      * @function
      */
-  var alias = function(alias, original) {
-    window.mixpanel.alias(alias, original);
-  };
-
-  /**
-     * Set properties on a user record.
-     * https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.people.set
-     *
-     * @name Main#set
-     * @param {Object} Properties
-     * @function
-     */
-  var set = function(properties) {
-    window.mixpanel.people.set(properties);
+  var alias = function(id) {
+    window.analytics.alias(id);
   };
 
   window.trackingWallet = {
     init: init,
     track: track,
     extractDataForm: extractDataForm,
-    getMixpanelCookie: Cookie.getMixpanelCookie,
     identify: identify,
-    alias: alias,
-    people: { set: set }
+    alias: alias
   };
 })(window);
