@@ -529,9 +529,14 @@
       Cookie.set(Constants.cookieFirst, true, 365, cookieDomain);
     }
     logger.debug('Obtaining params last');
-    params = window.$.extend(window.analytics.user().traits(), params, _getLastParams());
 
-    window.analytics.identify(window.analytics.user(), params);
+    if (typeof window.analytics.user !== 'undefined' && typeof window.analytics.user().traits !== 'undefined') {
+      params = window.$.extend(window.analytics.user().traits(), params, _getLastParams());
+      window.analytics.identify(window.analytics.user(), params);
+    } else {
+      params = window.$.extend(params, _getLastParams());
+      window.analytics.identify(null, params);
+    }
   };
 
   /**
