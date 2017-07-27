@@ -261,7 +261,7 @@
   };
 
   /**
-     * Extract data of form to send in mixpanel object
+     * Extract data of form to send in segment object
      *
      * @private
      * @name Main#extractDataForm
@@ -529,9 +529,9 @@
       Cookie.set(Constants.cookieFirst, true, 365, cookieDomain);
     }
     logger.debug('Obtaining params last');
-    params = window.$.extend(params, _getLastParams());
+    params = window.$.extend(window.analytics.user().traits(), params, _getLastParams());
 
-    window.mixpanel.register(params);
+    window.analytics.identify(window.analytics.user(), params);
   };
 
   /**
