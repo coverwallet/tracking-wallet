@@ -4,12 +4,12 @@
  * @name Main
  * @namespace
  */
-(function(window) {
+(function (window) {
   /**
      * @name Logger
      * @class
      */
-  var Logger = function(levelLogger) {
+  var Logger = function (levelLogger) {
     this.levelLogger = levelLogger;
   };
   /**
@@ -19,7 +19,7 @@
      * @function
      * @param {String} Text to show
      */
-  Logger.prototype.debug = function(text) {
+  Logger.prototype.debug = function (text) {
     if (this.levelLogger >= 3) {
       if (window && window.console && window.console.debug) {
         window.console.debug(text);
@@ -34,7 +34,7 @@
      * @function
      * @param {String} Text to show
      */
-  Logger.prototype.info = function(text) {
+  Logger.prototype.info = function (text) {
     if (this.levelLogger >= 2) {
       if (window && window.console && window.console.info) {
         window.console.info(text);
@@ -49,7 +49,7 @@
      * @function
      * @param {String} Text to show
      */
-  Logger.prototype.warn = function(text) {
+  Logger.prototype.warn = function (text) {
     if (this.levelLogger >= 1) {
       if (window && window.console && window.console.warn) {
         window.console.warn(text);
@@ -64,7 +64,7 @@
      * @function
      * @param {String} Text to show
      */
-  Logger.prototype.error = function(text) {
+  Logger.prototype.error = function (text) {
     if (this.levelLogger >= 0) {
       if (window && window.console && window.console.error) {
         window.console.error(text);
@@ -75,9 +75,9 @@
   /**
      * Generator unique ids
      */
-  var Generator = function() {};
+  var Generator = function () { };
 
-  Generator.getId = function() {
+  Generator.getId = function () {
     function chr4() {
       return Math.random().toString(16).slice(-4);
     }
@@ -100,9 +100,9 @@
   /**
      * Utility for manage cookie
      */
-  var Cookie = function() {};
+  var Cookie = function () { };
 
-  Cookie.get = function(cName) {
+  Cookie.get = function (cName) {
     if (document.cookie.length > 0) {
       var cStart = document.cookie.indexOf(cName + '=');
       if (cStart !== -1) {
@@ -117,7 +117,7 @@
     return null;
   };
 
-  Cookie.set = function(name, value, days, domain) {
+  Cookie.set = function (name, value, days, domain) {
     var expires;
     var domainOption = '';
     if (days) {
@@ -158,7 +158,7 @@
      * @function
      * @param {Object} String
      */
-  var _capitalize = function(string) {
+  var _capitalize = function (string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
@@ -169,7 +169,7 @@
      * @function
      * @param {Object} String
      */
-  var _humanReadString = function(string) {
+  var _humanReadString = function (string) {
     if (string !== Constants.prefixNameTrakingData + 'event') {
       var text = string.replace(Constants.prefixNameTrakingData, '');
       text = text.replace('-', ' ');
@@ -186,7 +186,7 @@
      * @function
      * @param {Object} Object with all tracking properties
      */
-  var _getTrackDataOfElem = function(el) {
+  var _getTrackDataOfElem = function (el) {
     var attributes = el[0].attributes;
     var length,
       i,
@@ -210,9 +210,9 @@
      * @param Object attrs Object with all attributes to send
      * @function
      */
-  var _doClickElement = function(el, click) {
+  var _doClickElement = function (el, click) {
     el[0].click();
-    setTimeout(function() {
+    setTimeout(function () {
       el.on('click', click);
     }, 200);
   };
@@ -225,7 +225,7 @@
      * @param Object el Dom element
      * @function
      */
-  var _getSelector = function(el) {
+  var _getSelector = function (el) {
     if (el.attr('id')) {
       return el.attr('id');
     }
@@ -243,15 +243,15 @@
      * @param Object attrs Object with all attributes to send
      * @function
      */
-  var _bindClickEvent = function(el, attrs) {
+  var _bindClickEvent = function (el, attrs) {
     if (el.prop('tagName').toLowerCase() === 'a') {
       window.analytics.trackLink(el, _capitalize(Constants.clickEvent), attrs);
       logger.debug('Bind event click in ' + _getSelector(el));
     } else {
-      var click = function(e) {
+      var click = function (e) {
         e.preventDefault();
         el.unbind('click', click);
-        setTimeout(function() {
+        setTimeout(function () {
           _doClickElement(el, click);
         }, Constants.defaultTimeout);
         window.analytics.track(_capitalize(Constants.clickEvent), attrs);
@@ -268,9 +268,9 @@
      * @param Object el Dom element
      * @function
      */
-  var extractDataForm = function(el) {
+  var extractDataForm = function (el) {
     var values = {};
-    window.$.each(el.find('input, select'), function(i, field) {
+    window.$.each(el.find('input, select'), function (i, field) {
       if (window.$(field).data('tw-name')) {
         values[window.$(field).data('tw-name')] = window.$(field).val();
       }
@@ -287,12 +287,12 @@
      * @param Object attrs Object with all attributes to send
      * @function
      */
-  var _bindSubmitEvent = function(el, attrs) {
+  var _bindSubmitEvent = function (el, attrs) {
     if (el.prop('tagName').toLowerCase() === 'form') {
       window.analytics.trackForm(
         el,
         _capitalize(Constants.submitEvent),
-        function() {
+        function () {
           // jshint ignore:line
           var values = extractDataForm(el);
           return window.$.extend({}, attrs, values);
@@ -311,7 +311,7 @@
      * @param Object el Dom element
      * @function
      */
-  var _bindTracking = function(el) {
+  var _bindTracking = function (el) {
     var attrs = _getTrackDataOfElem(el);
     attrs = window.$.extend({}, defaultData, attrs);
     if (attrs.event) {
@@ -339,7 +339,7 @@
      * @name Main#_searchTrackings
      * @function
      */
-  var _searchTrackings = function() {
+  var _searchTrackings = function () {
     var lengthElems,
       i = null;
     var elements = window.$('[' + Constants.nameTrackingEventData + ']');
@@ -358,7 +358,7 @@
      * @name Main#_sendPageViewEvent
      * @function
      */
-  var _sendPageViewEvent = function() {
+  var _sendPageViewEvent = function () {
     logger.debug('Sending page view event');
     var el = window.$('body');
     var attrs = _getTrackDataOfElem(el);
@@ -367,7 +367,7 @@
     window.analytics.track(Constants.pageViewEvent, attrs);
   };
 
-  var getQueryParam = function(url, param) {
+  var getQueryParam = function (url, param) {
     // Expects a raw URL
     param = param.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regexS = '[\\?&]' + param + '=([^&#]*)',
@@ -383,11 +383,11 @@
     }
   };
 
-  var contains = function(text, search) {
+  var contains = function (text, search) {
     return text && text.indexOf(search) >= 0;
   };
 
-  var _isSEO = function() {
+  var _isSEO = function () {
     var url = document.referrer;
     if (
       contains(url, 'google') ||
@@ -398,7 +398,7 @@
     }
     return false;
   };
-  var _isSocial = function() {
+  var _isSocial = function () {
     var url = document.referrer;
     if (
       contains(url, 'facebook') ||
@@ -412,7 +412,7 @@
     }
     return false;
   };
-  var _isReferral = function() {
+  var _isReferral = function () {
     var url = document.referrer;
     if (!_isSocial() && !_isSEO() && url) {
       return true;
@@ -420,14 +420,14 @@
     return false;
   };
 
-  var _isDirect = function() {
+  var _isDirect = function () {
     if (!_isReferral()) {
       return true;
     }
     return false;
   };
 
-  var _getTouchSource = function() {
+  var _getTouchSource = function () {
     var utmMedium = getQueryParam(document.URL, 'utm_medium');
     if (utmMedium) {
       return utmMedium;
@@ -443,7 +443,7 @@
     }
   };
 
-  var formatUTM = function(utm) {
+  var formatUTM = function (utm) {
     var parts = utm.split('_');
     if (parts.length > 1) {
       return parts[0].toUpperCase() + ' ' + _capitalize(parts[1]);
@@ -452,35 +452,47 @@
     }
   };
 
-  var _unregisterLastParams = function() {
-    var utms = [
-      'UTM Source',
-      'UTM Medium',
-      'UTM Campaign',
-      'UTM Content',
-      'UTM Term',
-      'Touch Source',
-      'Partner'
-    ];
+  var _unregisterLastParams = function () {
+    if (typeof window.analytics.user !== 'undefined' && window.analytics.user !== null) {
+      var user = window.analytics.user();
 
-    for (var index = 0; index < utms.length; ++index) {
-      var prop = 'Last ' + utms[index];
-      window.mixpanel.unregister(prop);
+      if (typeof user.traits !== 'undefined' && user.traits !== null) {
+        var traits = user.traits();
+        var utms = [
+          'UTM Source',
+          'UTM Medium',
+          'UTM Campaign',
+          'UTM Content',
+          'UTM Term',
+          'Touch Source',
+          'Partner'
+        ];
+
+        for (var index = 0; index < utms.length; ++index) {
+          var prop = 'Last ' + utms[index];
+
+          if (typeof traits[prop] !== 'undefined') {
+            delete traits[prop];
+          }
+        }
+
+        user.traits(traits);
+      }
     }
   };
 
-  var _getParams = function(prefix, params) {
+  var _getParams = function (prefix, params) {
     params[prefix + 'Touch Source'] = _getTouchSource();
     params[prefix + 'Partner'] =
       Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
     return params;
   };
 
-  var _getLastParams = function() {
+  var _getLastParams = function () {
     _unregisterLastParams();
     var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(
-        ' '
-      ),
+      ' '
+    ),
       kw = '',
       prefix = 'Last ',
       params = {};
@@ -494,7 +506,7 @@
     return _getParams(prefix, params);
   };
 
-  var _getFirstParams = function() {
+  var _getFirstParams = function () {
     return _getParams('First ', {});
   };
 
@@ -505,7 +517,7 @@
      * @name Main#_lastTouchUTMTags
      * @function
      */
-  var _lastTouchUTMTags = function() {
+  var _lastTouchUTMTags = function () {
     var params = {};
     if (!Cookie.get(Constants.cookieFirst)) {
       params = window.$.extend(params, _getFirstParams());
@@ -529,17 +541,24 @@
      * @name Main#_startTracking
      * @function
      */
-  var _startTracking = function() {
+  var _startTracking = function (initialOptions) {
     logger.debug('Starting tracking');
     try {
+      if (
+        typeof initialOptions !== 'undefined' &&
+        typeof initialOptions.userId !== 'undefined'
+      ) {
+        window.analytics.identify(initialOptions.userId, initialOptions.traits);
+      } else {
+        window.analytics.identify();
+      }
+
       if (
         config.calcLastAttrs &&
         (!document.referrer || document.referrer.indexOf(config.domainName) < 0)
       ) {
         _lastTouchUTMTags();
       }
-
-      window.analytics.identify();
 
       if (
         !config.hasOwnProperty('sendPageView') ||
@@ -561,7 +580,7 @@
      * @function
      * @param {Object} initialOptions
      */
-  var init = function(initialOptions) {
+  var init = function (initialOptions) {
     config = initialOptions || {};
     var levelLogger = 0;
 
@@ -598,7 +617,7 @@
       window.analytics.debug();
     }
 
-    _startTracking();
+    _startTracking(initialOptions);
   };
 
   /**
@@ -609,7 +628,7 @@
      * @param {Object} attrs Attributes to send
      * @function
      */
-  var track = function(event, attrs) {
+  var track = function (event, attrs) {
     var objectToSend = window.$.extend({}, defaultData, attrs);
     window.analytics.track(event, objectToSend);
   };
@@ -622,7 +641,7 @@
      * @param {String} unique_id A string that uniquely identifies a user
      * @function
      */
-  var identify = function(uniqueId, traits) {
+  var identify = function (uniqueId, traits) {
     logger.debug('Identifying user with id ' + uniqueId);
     window.analytics.identify(uniqueId, traits);
   };
@@ -635,7 +654,7 @@
      * @param {String} id A unique identifier that you want to use for this user in the future
      * @function
      */
-  var alias = function(id) {
+  var alias = function (id) {
     window.analytics.alias(id);
   };
 
