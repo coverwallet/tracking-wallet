@@ -529,7 +529,7 @@
      * @name Main#_startTracking
      * @function
      */
-  var _startTracking = function() {
+  var _startTracking = function(initialOptions) {
     logger.debug('Starting tracking');
     try {
       if (
@@ -539,7 +539,14 @@
         _lastTouchUTMTags();
       }
 
-      window.analytics.identify();
+      if (
+        typeof initialOptions !== 'undefined' &&
+        typeof initialOptions.userId !== 'undefined'
+      ) {
+        window.analytics.identify(initialOptions.userId, initialOptions.traits);
+      } else {
+        window.analytics.identify();
+      }
 
       if (
         !config.hasOwnProperty('sendPageView') ||
@@ -598,7 +605,7 @@
       window.analytics.debug();
     }
 
-    _startTracking();
+    _startTracking(initialOptions);
   };
 
   /**
