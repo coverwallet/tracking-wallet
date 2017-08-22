@@ -540,10 +540,10 @@
   };
 
   /**
-     * Start tracking logic
+     * Post identify Processes
      *
      * @private
-     * @name Main#_startTracking
+     * @name Main#_postInitProcess
      * @function
      */
   var _postInitProcess = function () {
