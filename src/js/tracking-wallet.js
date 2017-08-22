@@ -538,7 +538,6 @@
       window.analytics.identify(null, params);
     }
   };
-
   /**
      * Start tracking logic
      *
@@ -546,18 +545,9 @@
      * @name Main#_startTracking
      * @function
      */
-  var _startTracking = function (initialOptions) {
-    logger.debug('Starting tracking');
+  var _postInitProcess = function () {
+    logger.debug('Starting Post Init Process');
     try {
-      if (
-        typeof initialOptions !== 'undefined' &&
-        typeof initialOptions.userId !== 'undefined'
-      ) {
-        window.analytics.identify(initialOptions.userId, initialOptions.traits);
-      } else {
-        window.analytics.identify();
-      }
-
       if (
         config.calcLastAttrs &&
         (!document.referrer || document.referrer.indexOf(config.domainName) < 0)
@@ -573,6 +563,30 @@
       }
 
       _searchTrackings();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+
+  /**
+     * Start tracking logic
+     *
+     * @private
+     * @name Main#_startTracking
+     * @function
+     */
+  var _startTracking = function (initialOptions) {
+    logger.debug('Starting tracking');
+    try {
+      if (
+        typeof initialOptions !== 'undefined' &&
+        typeof initialOptions.userId !== 'undefined'
+      ) {
+        window.analytics.identify(initialOptions.userId, initialOptions.traits, {}, _postInitProcess);
+      } else {
+        window.analytics.identify(null ,null, {}, _postInitProcess);
+      }
     } catch (e) {
       console.error(e);
     }
