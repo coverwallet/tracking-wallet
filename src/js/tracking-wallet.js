@@ -538,6 +538,7 @@
       window.analytics.identify(null, params);
     }
   };
+
   /**
      * Start tracking logic
      *
@@ -567,7 +568,6 @@
       console.error(e);
     }
   }
-
 
   /**
      * Start tracking logic
