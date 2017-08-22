@@ -579,14 +579,15 @@
   var _startTracking = function (initialOptions) {
     logger.debug('Starting tracking');
     try {
-      if (
-        typeof initialOptions !== 'undefined' &&
-        typeof initialOptions.userId !== 'undefined'
-      ) {
-        window.analytics.identify(initialOptions.userId, initialOptions.traits, {}, _postInitProcess);
-      } else {
-        window.analytics.identify(null ,null, {}, _postInitProcess);
+      var userId = null;
+      var traits = null;
+
+      if (typeof initialOptions !== 'undefined' && typeof initialOptions.userId !== 'undefined') {
+        userId = initialOptions.userId;
+        traits = initialOptions.traits;
       }
+
+      window.analytics.identify(userId, traits, {}, _postInitProcess);
     } catch (e) {
       console.error(e);
     }
