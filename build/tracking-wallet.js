@@ -540,24 +540,15 @@
   };
 
   /**
-     * Start tracking logic
+     * Post identify Processes
      *
      * @private
-     * @name Main#_startTracking
+     * @name Main#_postInitProcess
      * @function
      */
-  var _startTracking = function (initialOptions) {
-    logger.debug('Starting tracking');
+  var _postInitProcess = function () {
+    logger.debug('Starting Post Init Process');
     try {
-      if (
-        typeof initialOptions !== 'undefined' &&
-        typeof initialOptions.userId !== 'undefined'
-      ) {
-        window.analytics.identify(initialOptions.userId, initialOptions.traits);
-      } else {
-        window.analytics.identify();
-      }
-
       if (
         config.calcLastAttrs &&
         (!document.referrer || document.referrer.indexOf(config.domainName) < 0)
@@ -573,6 +564,30 @@
       }
 
       _searchTrackings();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  /**
+     * Start tracking logic
+     *
+     * @private
+     * @name Main#_startTracking
+     * @function
+     */
+  var _startTracking = function (initialOptions) {
+    logger.debug('Starting tracking');
+    try {
+      var userId = null;
+      var traits = null;
+
+      if (typeof initialOptions !== 'undefined' && typeof initialOptions.userId !== 'undefined') {
+        userId = initialOptions.userId;
+        traits = initialOptions.traits;
+      }
+
+      window.analytics.identify(userId, traits, {}, _postInitProcess);
     } catch (e) {
       console.error(e);
     }
