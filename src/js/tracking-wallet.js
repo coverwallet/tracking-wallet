@@ -532,7 +532,7 @@
 
     if (typeof window.analytics.user !== 'undefined' && typeof window.analytics.user().traits !== 'undefined') {
       params = window.$.extend(window.analytics.user().traits(), params, _getLastParams());
-      window.analytics.identify(window.analytics.user(), params);
+      window.analytics.identify(window.analytics.user().id(), params);
     } else {
       params = window.$.extend(params, _getLastParams());
       window.analytics.identify(null, params);
