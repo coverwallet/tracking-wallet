@@ -530,6 +530,11 @@
     }
     logger.debug('Obtaining params last');
 
+    var gclid = getQueryParam(document.URL, 'gclid');
+    if (gclid) {
+      params['gclid'] = gclid;
+    }
+
     if (typeof window.analytics.user !== 'undefined' && typeof window.analytics.user().traits !== 'undefined') {
       params = window.$.extend(window.analytics.user().traits(), params, _getLastParams());
       window.analytics.identify(window.analytics.user().id(), params);
