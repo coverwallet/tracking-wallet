@@ -145,7 +145,9 @@
     defaultTimeout: 300,
     cookieFirst: 'CW-FirstTime',
     cookieLastPartner: 'last-partner',
-    sendPageView: 'send-page-view'
+    sendPageView: 'send-page-view',
+    cookieExpiration: 1825, // Time in days = 5 Years
+    agentCookieName: 'ichbineincover',
   };
   var defaultData = {};
   var logger = null;
@@ -642,7 +644,13 @@
       window.analytics.debug();
     }
 
-    _startTracking(initialOptions);
+    analytics.ready(function() {
+      window.mixpanel.set_config({ cookie_expiration: Constants.cookieExpiration });
+    });
+
+    if (isTrackingEnabled()) {
+      _startTracking(initialOptions);
+    }
   };
 
   /**
@@ -654,8 +662,10 @@
      * @function
      */
   var track = function (event, attrs) {
-    var objectToSend = window.$.extend({}, defaultData, attrs);
-    window.analytics.track(event, objectToSend);
+    if (isTrackingEnabled()) {
+      var objectToSend = window.$.extend({}, defaultData, attrs);
+      window.analytics.track(event, objectToSend);
+    }
   };
 
   /**
@@ -667,8 +677,10 @@
      * @function
      */
   var identify = function (uniqueId, traits) {
-    logger.debug('Identifying user with id ' + uniqueId);
-    window.analytics.identify(uniqueId, traits);
+    if (isTrackingEnabled()) {
+      logger.debug('Identifying user with id ' + uniqueId);
+      window.analytics.identify(uniqueId, traits);
+    }
   };
 
   /**
@@ -680,7 +692,15 @@
      * @function
      */
   var alias = function (id) {
-    window.analytics.alias(id);
+    if (isTrackingEnabled()) {
+      window.analytics.alias(id);
+    }
+  };
+
+  var isTrackingEnabled = function () {
+    var cookie = Cookie.get(Constants.agentCookieName);
+
+    return cookie === null || typeof cookie === 'undefined';
   };
 
   window.trackingWallet = {
