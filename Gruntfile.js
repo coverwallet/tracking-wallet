@@ -81,16 +81,6 @@ module.exports = function(grunt) {
         dest: '<%= buildDir %>/'
       }
     },
-    jsdoc: {
-      dist: {
-        src: ['src/**/*.js', 'test/unit/**/*.spec.js'],
-        options: {
-          destination: '<%= buildDir %>/doc',
-          configure: 'jsdocConf.json',
-          template: 'node_modules/ink-docstrap/template'
-        }
-      }
-    },
     watch: {
       options: { livereload: true },
       js: { files: ['src/**/*.js'], tasks: ['jshint:js'] }
@@ -104,8 +94,7 @@ module.exports = function(grunt) {
     'build',
     'copy:main',
     'uglify:js',
-    'compress',
-    'jsdoc'
+    'compress'
   ]);
   grunt.registerTask('test', ['karma:unit', 'build']);
   grunt.registerTask('serve', ['build', 'connect:serverTest', 'watch']);
