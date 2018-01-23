@@ -642,6 +642,10 @@
       window.analytics.debug();
     }
 
+    analytics.ready(function() {
+      window.mixpanel.set_config({ cookie_expiration: 1825 });
+    });
+
     _startTracking(initialOptions);
   };
 
