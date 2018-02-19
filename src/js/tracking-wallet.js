@@ -679,7 +679,7 @@
   var identify = function (uniqueId, traits) {
     if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
-      window.analytics.identify(uniqueId, traits);
+      window.analytics.identify(uniqueId.toLowerCase(), traits);
     }
   };
 
