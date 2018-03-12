@@ -665,6 +665,10 @@
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
       window.analytics.track(event, objectToSend);
+
+      if (event === 'Page view') {
+        window.analytics.track(event + ' - ' + window.location.href, objectToSend);
+      }
     }
   };
 
@@ -679,7 +683,7 @@
   var identify = function (uniqueId, traits) {
     if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
-      window.analytics.identify(uniqueId, traits);
+      window.analytics.identify(uniqueId.toLowerCase(), traits);
     }
   };
 
