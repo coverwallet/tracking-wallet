@@ -667,7 +667,14 @@
       window.analytics.track(event, objectToSend);
 
       if (event === 'Page view') {
-        window.analytics.track(event + ' - ' + window.location.href, objectToSend);
+        window.analytics.track(
+          event + ' - ' + window.location.href, objectToSend,
+          {
+            integrations: {
+              'All': false,
+              'Google Analytics': true
+            }
+          });
       }
     }
   };
