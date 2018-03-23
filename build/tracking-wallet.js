@@ -712,10 +712,10 @@
   };
 
   var getGtmEvent = function (event, attrs) {
-    const gtmEvent = [].push(event);
+    const gtmEvent = { event: event };
 
     Object.keys(attrs).forEach(function(key) {
-      gtmEvent.push(attrs[key]);
+      gtmEvent[key] = attrs[key];
     });
 
     return gtmEvent;
