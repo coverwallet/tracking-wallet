@@ -712,13 +712,26 @@
   };
 
   var getGtmEvent = function (event, attrs) {
-    const gtmEvent = { event: event };
+    if (Array.isArray(attrs)) {
+      return getGtmArray(event, attrs);
+    } else {
+      return getGtmObject(event, attrs);
+    }
+    
+  };
 
-    Object.keys(attrs).forEach(function(key) {
-      gtmEvent[key] = attrs[key];
+  var getGtmArray = function (event, attrs) {
+    const gtmEvent = [].push(event);
+    
+    attrs.forEach(function(key) {
+      gtmEvent.push(attrs[key]);
     });
 
     return gtmEvent;
+  };
+
+  var getGtmObject = function (event, attrs) {
+    return window.$.extend({ event: event }, attrs);
   };
 
   window.trackingWallet = {
