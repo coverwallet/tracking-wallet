@@ -665,17 +665,10 @@
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
       window.analytics.track(event, objectToSend);
+    }
 
-      if (event === 'Page view') {
-        window.analytics.track(
-          event + ' - ' + window.location.href, objectToSend,
-          {
-            integrations: {
-              'All': false,
-              'Google Analytics': true
-            }
-          });
-      }
+    if (isGtmLoaded()) {
+      window.dataLayer.push(getGtmEvent(event, attrs));
     }
   };
 
@@ -712,6 +705,33 @@
     var cookie = Cookie.get(Constants.agentCookieName);
 
     return cookie === null || typeof cookie === 'undefined';
+  };
+
+  var isGtmLoaded = function () {
+    return !!(window.dataLayer && window.dataLayer.push);
+  };
+
+  var getGtmEvent = function (event, attrs) {
+    if (Array.isArray(attrs)) {
+      return getGtmArray(event, attrs);
+    } else {
+      return getGtmObject(event, attrs);
+    }
+    
+  };
+
+  var getGtmArray = function (event, attrs) {
+    const gtmEvent = [].push(event);
+    
+    attrs.forEach(function(key) {
+      gtmEvent.push(attrs[key]);
+    });
+
+    return gtmEvent;
+  };
+
+  var getGtmObject = function (event, attrs) {
+    return window.$.extend({ event: event }, attrs);
   };
 
   window.trackingWallet = {
