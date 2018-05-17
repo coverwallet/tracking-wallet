@@ -353,22 +353,6 @@
     }
   };
 
-  /**
-     * Send page view event
-     *
-     * @private
-     * @name Main#_sendPageViewEvent
-     * @function
-     */
-  var _sendPageViewEvent = function () {
-    logger.debug('Sending page view event');
-    var el = window.$('body');
-    var attrs = _getTrackDataOfElem(el);
-    //saving default data
-    defaultData = attrs;
-    window.analytics.track(Constants.pageViewEvent, attrs);
-  };
-
   var getQueryParam = function (url, param) {
     // Expects a raw URL
     param = param.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -546,6 +530,50 @@
     }
   };
 
+  var isGtmLoaded = function() {
+    return !!(window.dataLayer && window.dataLayer.push);
+  };
+
+  /**
+   * Track event and complete attributes with default data of page (body data attributes)
+   *
+   * @name Main#track
+   * @param {String} event Name of event
+   * @param {Object} attrs Attributes to send
+   * @function
+   */
+  var track = function (event, attrs) {
+    if (isTrackingEnabled()) {
+      var objectToSend = window.$.extend({}, defaultData, attrs);
+
+      if (event === 'Page view') {
+        window.analytics.page();
+      }
+
+      window.analytics.track(event, objectToSend);
+
+      if (isGtmLoaded()) {
+        window.dataLayer.push(Object.assign({}, { event: event }, attrs));
+      }
+    }
+  };
+
+  /**
+     * Send page view event
+     *
+     * @private
+     * @name Main#_sendPageViewEvent
+     * @function
+     */
+    var _sendPageViewEvent = function () {
+      logger.debug('Sending page view event');
+      var el = window.$('body');
+      var attrs = _getTrackDataOfElem(el);
+      //saving default data
+      defaultData = attrs;
+      track(Constants.pageViewEvent, attrs);
+    };
+
   /**
      * Post identify Processes
      *
@@ -650,32 +678,6 @@
 
     if (isTrackingEnabled()) {
       _startTracking(initialOptions);
-    }
-  };
-
-  /**
-     * Track event and complete attributes with default data of page (body data attributes)
-     *
-     * @name Main#track
-     * @param {String} event Name of event
-     * @param {Object} attrs Attributes to send
-     * @function
-     */
-  var track = function (event, attrs) {
-    if (isTrackingEnabled()) {
-      var objectToSend = window.$.extend({}, defaultData, attrs);
-      window.analytics.track(event, objectToSend);
-
-      if (event === 'Page view') {
-        window.analytics.track(
-          event + ' - ' + window.location.href, objectToSend,
-          {
-            integrations: {
-              'All': false,
-              'Google Analytics': true
-            }
-          });
-      }
     }
   };
 
