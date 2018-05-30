@@ -6,6 +6,12 @@
  */
 (function (window) {
   /**
+   * @type {Object} _initialUTMTags
+   * @see preserveUTMTags
+   */
+  var _initialUTMTags = null;
+
+  /**
      * @name Logger
      * @class
      */
@@ -475,6 +481,10 @@
   };
 
   var _getLastParams = function () {
+    if (_initialUTMTags !== null) {
+      return _initialUTMTags;
+    }
+
     _unregisterLastParams();
     var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(
       ' '
@@ -716,11 +726,29 @@
     return cookie === null || typeof cookie === 'undefined';
   };
 
+  /**
+   * SPA modify the URL by using the Browser's Location History API, this means that UTM tags
+   * can be lost when we try to track.
+   *
+   * With this method we are capturing the UTM tags and keep them stored in the library's scope
+   * so it can be used as a fallback when we call to _getLastParams
+   *
+   * This must be called explicitely at a point where the SPA is initialized, normally the main
+   * component's render (or for React Apps componentWillReceiveProps).
+   *
+   * @name Main#preserveUTMTags
+   * @function
+   **/
+  var preserveUTMTags = function () {
+    _initialUTMTags = _getLastParams();
+  };
+
   window.trackingWallet = {
     init: init,
     track: track,
     extractDataForm: extractDataForm,
     identify: identify,
+    preserveUTMTags: preserveUTMTags,
     alias: alias
   };
 })(window);
