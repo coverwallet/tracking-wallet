@@ -678,7 +678,7 @@
 
     logger = new Logger(levelLogger);
 
-    if (levelLogger === 0) {
+    if (levelLogger >= 3) {
       window.analytics.debug();
     }
 
