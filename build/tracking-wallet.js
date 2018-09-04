@@ -153,8 +153,6 @@
     cookieLastPartner: 'last-partner',
     sendPageView: 'send-page-view',
     cookieExpiration: 1825, // Time in days = 5 Years
-    agentCookieName: 'is_agent',
-    disabledTrackingCookieName: 'ichbineincover',
   };
   var defaultData = {};
   var logger = null;
