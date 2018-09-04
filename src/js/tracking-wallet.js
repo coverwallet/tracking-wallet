@@ -613,7 +613,7 @@
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   /**
      * Start tracking logic
@@ -623,7 +623,7 @@
      * @function
      */
   var _startTracking = function (initialOptions) {
-    if (isAgent()) {
+    if (config.skipInitIdentifying) {
       return;
     }
 
@@ -726,15 +726,7 @@
   };
 
   var isTrackingEnabled = function () {
-    var cookie = Cookie.get(Constants.disabledTrackingCookieName);
-
-    return cookie === null || typeof cookie === 'undefined';
-  };
-
-  var isAgent = function () {
-    var agentCookie = Cookie.get(Constants.agentCookieName);
-
-    return !!agentCookie;
+    return !config.trackingDisabled;
   };
 
   /**
