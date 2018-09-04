@@ -153,6 +153,7 @@
     cookieLastPartner: 'last-partner',
     sendPageView: 'send-page-view',
     cookieExpiration: 1825, // Time in days = 5 Years
+    disabledTrackingCookieName: 'ichbineincover',
   };
   var defaultData = {};
   var logger = null;
@@ -724,7 +725,9 @@
   };
 
   var isTrackingEnabled = function () {
-    return !config.trackingDisabled;
+    var cookie = Cookie.get(Constants.disabledTrackingCookieName);
+
+    return cookie === null || typeof cookie === 'undefined';
   };
 
   /**
