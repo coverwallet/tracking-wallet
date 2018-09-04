@@ -153,7 +153,7 @@
     cookieLastPartner: 'last-partner',
     sendPageView: 'send-page-view',
     cookieExpiration: 1825, // Time in days = 5 Years
-    agentCookieName: 'ichbineincover',
+    disabledTrackingCookieName: 'ichbineincover',
   };
   var defaultData = {};
   var logger = null;
@@ -612,7 +612,7 @@
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   /**
      * Start tracking logic
@@ -622,6 +622,10 @@
      * @function
      */
   var _startTracking = function (initialOptions) {
+    if (config.skipInitIdentifying) {
+      return;
+    }
+
     logger.debug('Starting tracking');
     try {
       var userId = null;
@@ -721,7 +725,7 @@
   };
 
   var isTrackingEnabled = function () {
-    var cookie = Cookie.get(Constants.agentCookieName);
+    var cookie = Cookie.get(Constants.disabledTrackingCookieName);
 
     return cookie === null || typeof cookie === 'undefined';
   };
