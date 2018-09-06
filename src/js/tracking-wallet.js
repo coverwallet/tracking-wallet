@@ -557,10 +557,12 @@
       var objectToSend = window.$.extend({}, defaultData, attrs);
 
       if (event === 'Page view') {
-        window.analytics.page();
+        window.analytics.page(objectToSend);
       }
 
-      window.analytics.track(event, objectToSend);
+      if (!config.skipPageViewEvents) {
+        window.analytics.track(event, objectToSend);
+      }
 
       if (isGtmLoaded()) {
         window.dataLayer.push(Object.assign({}, { event: event }, attrs));
