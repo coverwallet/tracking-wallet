@@ -544,6 +544,13 @@
     return !!(window.dataLayer && window.dataLayer.push);
   };
 
+  var trackPageViewEvent = function(objectToSend) {
+    window.analytics.page(objectToSend);
+    if (!config.skipPageViewEvents) {
+      window.analytics.track(Constants.pageViewEvent, objectToSend);
+    }
+  };
+
   /**
    * Track event and complete attributes with default data of page (body data attributes)
    *
@@ -556,11 +563,9 @@
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
 
-      if (event === 'Page view') {
-        window.analytics.page(objectToSend);
-      }
-
-      if (!config.skipPageViewEvents) {
+      if (event === Constants.pageViewEvent) {
+        trackPageViewEvent(objectToSend);
+      } else {
         window.analytics.track(event, objectToSend);
       }
 
