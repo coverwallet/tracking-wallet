@@ -157,6 +157,19 @@
   };
   var defaultData = {};
   var logger = null;
+
+  /**
+     * TrackingWallet config options
+     * @public
+     * @name Main#config
+     * @object
+     * @attr {Boolean} trackAgentsOn - enable tracking for agents
+     * @attr {Boolean} skipPageViewEvents - skip "Page view" track on every page track
+     * @attr {Boolean} calcLastAttrs - 
+     * @attr {Boolean} sendPageView - 
+     * @attr {Boolean} skipInitIdentifying - 
+     * @attr {Boolean} domainName - 
+     */
   var config = {};
 
   /**
@@ -664,11 +677,11 @@
       throw new Error('window.analytics not load');
     }
 
-    config.env = window.$('body').data('env')
+    var env = window.$('body').data('env')
       ? window.$('body').data('env').toLowerCase()
       : 'production';
 
-    if (config.env !== 'production') {
+    if (env !== 'production') {
       levelLogger = 3;
     }
 
@@ -734,7 +747,7 @@
   var isTrackingEnabled = function () {
     var cookie = Cookie.get(Constants.disabledTrackingCookieName);
 
-    return cookie === null || typeof cookie === 'undefined';
+    return config.trackAgentsOn || cookie === null || typeof cookie === 'undefined';
   };
 
   /**
