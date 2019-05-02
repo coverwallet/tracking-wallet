@@ -291,9 +291,11 @@
      */
   var extractDataForm = function (el) {
     var values = {};
-    window.$.each(el.find('input, select'), function (i, field) {
-      if (window.$(field).data('tw-name')) {
-        values[window.$(field).data('tw-name')] = window.$(field).val();
+    var elementList = el.find('input, select');
+    elementList.forEach(function (i, field) {
+      var element = document.querySelectorAll(field)[0];
+      if (element.dataset['tw-name']) {
+        values[element.dataset['tw-name']] = element.value;
       }
     });
     return values;
@@ -316,7 +318,7 @@
         function () {
           // jshint ignore:line
           var values = extractDataForm(el);
-          return window.$.extend({}, attrs, values);
+          return Object.assign({}, attrs, values);
         }
       );
     } else {
@@ -334,7 +336,7 @@
      */
   var _bindTracking = function (el) {
     var attrs = _getTrackDataOfElem(el);
-    attrs = window.$.extend({}, defaultData, attrs);
+    attrs = Object.assign({}, defaultData, attrs);
     if (attrs.event) {
       var eventName = attrs.event;
       delete attrs.event;
@@ -363,11 +365,11 @@
   var _searchTrackings = function () {
     var lengthElems,
       i = null;
-    var elements = window.$('[' + Constants.nameTrackingEventData + ']');
+    var elements = document.querySelectorAll('[' + Constants.nameTrackingEventData + ']');
     if (elements && elements.length > 0) {
       lengthElems = elements.length;
       for (i = 0; i < lengthElems; i++) {
-        _bindTracking(window.$(elements[i]));
+        _bindTracking(document.querySelectorAll(elements[i]));
       }
     }
   };
@@ -529,7 +531,7 @@
   var _lastTouchUTMTags = function () {
     var params = {};
     if (!Cookie.get(Constants.cookieFirst)) {
-      params = window.$.extend(params, _getFirstParams());
+      params = Object.assign(params, _getFirstParams());
       var subdomains = window.location.host.split('.');
       var cookieDomain =
         subdomains.length > 2
@@ -545,10 +547,10 @@
     }
 
     if (typeof window.analytics.user !== 'undefined' && typeof window.analytics.user().traits !== 'undefined') {
-      params = window.$.extend(window.analytics.user().traits(), params, _getLastParams());
+      params = Object.assign(window.analytics.user().traits(), params, _getLastParams());
       window.analytics.identify(window.analytics.user().id(), params);
     } else {
-      params = window.$.extend(params, _getLastParams());
+      params = Object.assign(params, _getLastParams());
       window.analytics.identify(null, params);
     }
   };
@@ -574,8 +576,7 @@
    */
   var track = function (event, attrs) {
     if (isTrackingEnabled()) {
-      var objectToSend = window.$.extend({}, defaultData, attrs);
-
+      var objectToSend = Object.assign({}, defaultData, attrs);
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
       } else {
@@ -597,7 +598,7 @@
      */
     var _sendPageViewEvent = function () {
       logger.debug('Sending page view event');
-      var el = window.$('body');
+      var el = document.getElementsByTagName('body');
       var attrs = _getTrackDataOfElem(el);
       //saving default data
       defaultData = attrs;
@@ -672,13 +673,12 @@
   var init = function (initialOptions) {
     config = initialOptions || {};
     var levelLogger = 0;
-
     if (window.analytics === undefined) {
       throw new Error('window.analytics not load');
     }
 
-    var env = window.$('body').data('env')
-      ? window.$('body').data('env').toLowerCase()
+    var env = document.getElementsByTagName('body')[0].dataset.env
+      ? document.getElementsByTagName('body')[0].dataset.env.toLowerCase()
       : 'production';
 
     if (env !== 'production') {
