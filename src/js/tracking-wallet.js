@@ -723,10 +723,10 @@
      * @param {String} unique_id A string that uniquely identifies a user
      * @function
      */
-  var identify = function (uniqueId, traits) {
+  var identify = function (uniqueId, traits, options, callback) {
     if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
-      window.analytics.identify(uniqueId.toLowerCase(), traits);
+      window.analytics.identify(uniqueId.toLowerCase(), traits, options, callback);
     }
   };
 
