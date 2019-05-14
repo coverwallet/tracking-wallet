@@ -721,12 +721,15 @@
      *
      * @name Main#identify
      * @param {String} unique_id A string that uniquely identifies a user
+     * @param {Object} traits A dictionary of traits about the user
+     * @param {Object} options A dictionary of options.
+     * @param {Function} callback A function that is executed after a short timeout
      * @function
      */
-  var identify = function (uniqueId, traits) {
+  var identify = function (uniqueId, traits, options, callback) {
     if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
-      window.analytics.identify(uniqueId.toLowerCase(), traits);
+      window.analytics.identify(uniqueId.toLowerCase(), traits, options, callback);
     }
   };
 
