@@ -721,6 +721,9 @@
      *
      * @name Main#identify
      * @param {String} unique_id A string that uniquely identifies a user
+     * @param {Object} traits A dictionary of traits about the user
+     * @param {Object} options A dictionary of options.
+     * @param {Function} callback A function that is executed after a short timeout
      * @function
      */
   var identify = function (uniqueId, traits, options, callback) {
