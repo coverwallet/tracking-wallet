@@ -781,6 +781,6 @@
     identify: identify,
     preserveUTMTags: preserveUTMTags,
     alias: alias,
-    getUserId: getUserId,
+    getUserId: getUserId
   };
 })(window);
