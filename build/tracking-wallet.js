@@ -747,6 +747,10 @@
     }
   };
 
+  var getUserId = function () {
+    return window.mixpanel.get_distinct_id();
+  };
+
   var isTrackingEnabled = function () {
     var cookie = Cookie.get(Constants.disabledTrackingCookieName);
 
@@ -776,6 +780,7 @@
     extractDataForm: extractDataForm,
     identify: identify,
     preserveUTMTags: preserveUTMTags,
-    alias: alias
+    alias: alias,
+    getUserId: getUserId,
   };
 })(window);
