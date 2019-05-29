@@ -748,7 +748,9 @@
   };
 
   var getUserId = function () {
-    return window.mixpanel.get_distinct_id();
+    if (window.mixpanel && window.mixpanel.get_distinct_id) {
+      return window.mixpanel.get_distinct_id();
+    }
   };
 
   var isTrackingEnabled = function () {
