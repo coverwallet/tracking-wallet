@@ -770,7 +770,7 @@
      */
 
   var timeEvent = function (event) {
-    if (isTrackingEnabled()) {
+    if (window.mixpanel && window.mixpanel.time_event) {
       window.mixpanel.time_event(event);
     }
   }
