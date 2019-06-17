@@ -165,10 +165,10 @@
      * @object
      * @attr {Boolean} trackAgentsOn - enable tracking for agents
      * @attr {Boolean} skipPageViewEvents - skip "Page view" track on every page track
-     * @attr {Boolean} calcLastAttrs - 
-     * @attr {Boolean} sendPageView - 
-     * @attr {Boolean} skipInitIdentifying - 
-     * @attr {Boolean} domainName - 
+     * @attr {Boolean} calcLastAttrs -
+     * @attr {Boolean} sendPageView -
+     * @attr {Boolean} skipInitIdentifying -
+     * @attr {Boolean} domainName -
      */
   var config = {};
 
@@ -760,6 +760,22 @@
   };
 
   /**
+     * Time an event by including the time between this call and a later 'track' call for the
+     *  same event in the properties sent with the event.
+     * https://developer.mixpanel.com/docs/javascript-full-api-reference#section-mixpanel-time_event
+     *
+     * @name Main#timeEvent
+     * @param {String} event Name of event
+     * @function
+     */
+
+  var timeEvent = function (event) {
+    if (isTrackingEnabled() && window.mixpanel && window.mixpanel.time_event) {
+      window.mixpanel.time_event(event);
+    }
+  }
+
+  /**
    * SPA modify the URL by using the Browser's Location History API, this means that UTM tags
    * can be lost when we try to track.
    *
@@ -783,6 +799,7 @@
     identify: identify,
     preserveUTMTags: preserveUTMTags,
     alias: alias,
-    getUserId: getUserId
+    getUserId: getUserId,
+    timeEvent: timeEvent,
   };
 })(window);
