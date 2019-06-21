@@ -770,8 +770,10 @@
      */
 
   var timeEvent = function (event) {
-    if (isTrackingEnabled() && window.mixpanel && window.mixpanel.time_event) {
-      window.mixpanel.time_event(event);
+    if (isTrackingEnabled() && window.analytics && window.mixpanel && window.mixpanel.time_event) {
+      window.analytics.ready(function() {
+        window.mixpanel.time_event(event);
+      });
     }
   }
 
