@@ -193,7 +193,7 @@
   var _humanReadString = function (string) {
     if (string !== Constants.prefixNameTrakingData + 'event') {
       var text = string.replace(Constants.prefixNameTrakingData, '');
-      text = text.replace('-', ' ');
+      text = text.replace(/-/g, ' ');
       return _capitalize(text);
     } else {
       return string.replace(Constants.prefixNameTrakingData, '');
