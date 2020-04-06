@@ -671,7 +671,7 @@
      */
   var init = function (initialOptions) {
     config = initialOptions || {};
-    var levelLogger = 0;
+    var levelLogger = initialOptions.levelLogger || 0;
 
     if (window.analytics === undefined) {
       throw new Error('window.analytics not load');
@@ -680,10 +680,6 @@
     var env = window.$('body').data('env')
       ? window.$('body').data('env').toLowerCase()
       : 'production';
-
-    if (env !== 'production') {
-      levelLogger = 3;
-    }
 
     if (!config.hasOwnProperty('domainName') || config.domainName === null) {
       config.domainName = window.location.host.match(/\.?([^.]+)\.[^.]+.?$/)[1];
