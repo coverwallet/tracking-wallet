@@ -671,7 +671,7 @@
      */
   var init = function (initialOptions) {
     config = initialOptions || {};
-    var levelLogger = initialOptions.levelLogger || 0;
+    var levelLogger = config.levelLogger || 0;
 
     if (window.analytics === undefined) {
       throw new Error('window.analytics not load');
