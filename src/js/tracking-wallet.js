@@ -10,7 +10,6 @@
    * @see preserveUTMTags
    */
   var _initialUTMTags = null;
-
   /**
      * @name Logger
      * @class
@@ -575,7 +574,12 @@
   var track = function (event, attrs) {
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
-
+      var applicationMode =window.config.applicationMode;
+      if(!applicationMode){
+        logger.error('Application mode not found and will not be tracked');
+      }else{
+        objectToSend.applicationMode = applicationMode;
+      }
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
       } else {
