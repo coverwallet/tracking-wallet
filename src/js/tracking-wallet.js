@@ -11,19 +11,19 @@
    */
   var _initialUTMTags = null;
   /**
-     * @name Logger
-     * @class
-     */
+   * @name Logger
+   * @class
+   */
   var Logger = function (levelLogger) {
     this.levelLogger = levelLogger;
   };
   /**
-     * Show debug Logger
-     * @public
-     * @name Logger#debug
-     * @function
-     * @param {String} Text to show
-     */
+   * Show debug Logger
+   * @public
+   * @name Logger#debug
+   * @function
+   * @param {String} Text to show
+   */
   Logger.prototype.debug = function (text) {
     if (this.levelLogger >= 3) {
       if (window && window.console && window.console.debug) {
@@ -33,12 +33,12 @@
   };
 
   /**
-     * Show info Logger
-     * @public
-     * @name Logger#info
-     * @function
-     * @param {String} Text to show
-     */
+   * Show info Logger
+   * @public
+   * @name Logger#info
+   * @function
+   * @param {String} Text to show
+   */
   Logger.prototype.info = function (text) {
     if (this.levelLogger >= 2) {
       if (window && window.console && window.console.info) {
@@ -48,12 +48,12 @@
   };
 
   /**
-     * Show warn Logger
-     * @public
-     * @name Logger#warn
-     * @function
-     * @param {String} Text to show
-     */
+   * Show warn Logger
+   * @public
+   * @name Logger#warn
+   * @function
+   * @param {String} Text to show
+   */
   Logger.prototype.warn = function (text) {
     if (this.levelLogger >= 1) {
       if (window && window.console && window.console.warn) {
@@ -63,12 +63,12 @@
   };
 
   /**
-     * Show error Logger
-     * @public
-     * @name Logger#error
-     * @function
-     * @param {String} Text to show
-     */
+   * Show error Logger
+   * @public
+   * @name Logger#error
+   * @function
+   * @param {String} Text to show
+   */
   Logger.prototype.error = function (text) {
     if (this.levelLogger >= 0) {
       if (window && window.console && window.console.error) {
@@ -78,8 +78,8 @@
   };
 
   /**
-     * Generator unique ids
-     */
+   * Generator unique ids
+   */
   var Generator = function () { };
 
   Generator.getId = function () {
@@ -87,24 +87,24 @@
       return Math.random().toString(16).slice(-4);
     }
     return (
-      chr4() +
-      chr4() +
-      '-' +
-      chr4() +
-      '-' +
-      chr4() +
-      '-' +
-      chr4() +
-      '-' +
-      chr4() +
-      chr4() +
-      chr4()
+        chr4() +
+        chr4() +
+        '-' +
+        chr4() +
+        '-' +
+        chr4() +
+        '-' +
+        chr4() +
+        '-' +
+        chr4() +
+        chr4() +
+        chr4()
     );
   };
 
   /**
-     * Utility for manage cookie
-     */
+   * Utility for manage cookie
+   */
   var Cookie = function () { };
 
   Cookie.get = function (cName) {
@@ -158,37 +158,37 @@
   var logger = null;
 
   /**
-     * TrackingWallet config options
-     * @public
-     * @name Main#config
-     * @object
-     * @attr {Boolean} trackAgentsOn - enable tracking for agents
-     * @attr {Boolean} skipPageViewEvents - skip "Page view" track on every page track
-     * @attr {Boolean} calcLastAttrs -
-     * @attr {Boolean} sendPageView -
-     * @attr {Boolean} skipInitIdentifying -
-     * @attr {Boolean} domainName -
-     */
+   * TrackingWallet config options
+   * @public
+   * @name Main#config
+   * @object
+   * @attr {Boolean} trackAgentsOn - enable tracking for agents
+   * @attr {Boolean} skipPageViewEvents - skip "Page view" track on every page track
+   * @attr {Boolean} calcLastAttrs -
+   * @attr {Boolean} sendPageView -
+   * @attr {Boolean} skipInitIdentifying -
+   * @attr {Boolean} domainName -
+   */
   var config = {};
 
   /**
-     * Return String with capitalize first letter
-     * @public
-     * @name Main#_capitalize
-     * @function
-     * @param {Object} String
-     */
+   * Return String with capitalize first letter
+   * @public
+   * @name Main#_capitalize
+   * @function
+   * @param {Object} String
+   */
   var _capitalize = function (string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   /**
-     * Return String with capitalize first letter and change - by spaces
-     * @public
-     * @name Main#_humanReadString
-     * @function
-     * @param {Object} String
-     */
+   * Return String with capitalize first letter and change - by spaces
+   * @public
+   * @name Main#_humanReadString
+   * @function
+   * @param {Object} String
+   */
   var _humanReadString = function (string) {
     if (string !== Constants.prefixNameTrakingData + 'event') {
       var text = string.replace(Constants.prefixNameTrakingData, '');
@@ -200,18 +200,18 @@
   };
 
   /**
-     * Return object with all tracking properties of the param element
-     * @public
-     * @name Main#_getTrackDataOfElem
-     * @function
-     * @param {Object} Object with all tracking properties
-     */
+   * Return object with all tracking properties of the param element
+   * @public
+   * @name Main#_getTrackDataOfElem
+   * @function
+   * @param {Object} Object with all tracking properties
+   */
   var _getTrackDataOfElem = function (el) {
     var attributes = el[0].attributes;
     var length,
-      i,
-      attr = null,
-      attrObj = {};
+        i,
+        attr = null,
+        attrObj = {};
     for (i = 0, length = attributes.length; i < length; i++) {
       attr = attributes[i];
       if (attr.name.indexOf(Constants.prefixNameTrakingData) === 0) {
@@ -222,14 +222,14 @@
   };
 
   /**
-     * Do click in element and bind after the timeout the same callback to track clicks
-     *
-     * @private
-     * @name Main#_bindClickEvent
-     * @param Object el Dom element
-     * @param Object attrs Object with all attributes to send
-     * @function
-     */
+   * Do click in element and bind after the timeout the same callback to track clicks
+   *
+   * @private
+   * @name Main#_bindClickEvent
+   * @param Object el Dom element
+   * @param Object attrs Object with all attributes to send
+   * @function
+   */
   var _doClickElement = function (el, click) {
     el[0].click();
     setTimeout(function () {
@@ -238,13 +238,13 @@
   };
 
   /**
-     * Obtain unique id of the element. If it has not id, generate it
-     *
-     * @private
-     * @name Main#_getSelector
-     * @param Object el Dom element
-     * @function
-     */
+   * Obtain unique id of the element. If it has not id, generate it
+   *
+   * @private
+   * @name Main#_getSelector
+   * @param Object el Dom element
+   * @function
+   */
   var _getSelector = function (el) {
     if (el.attr('id')) {
       return el.attr('id');
@@ -255,14 +255,14 @@
   };
 
   /**
-     * Track click event
-     *
-     * @private
-     * @name Main#_bindClickEvent
-     * @param Object el Dom element
-     * @param Object attrs Object with all attributes to send
-     * @function
-     */
+   * Track click event
+   *
+   * @private
+   * @name Main#_bindClickEvent
+   * @param Object el Dom element
+   * @param Object attrs Object with all attributes to send
+   * @function
+   */
   var _bindClickEvent = function (el, attrs) {
     if (el.prop('tagName').toLowerCase() === 'a') {
       window.analytics.trackLink(el, _capitalize(Constants.clickEvent), attrs);
@@ -281,13 +281,13 @@
   };
 
   /**
-     * Extract data of form to send in segment object
-     *
-     * @private
-     * @name Main#extractDataForm
-     * @param Object el Dom element
-     * @function
-     */
+   * Extract data of form to send in segment object
+   *
+   * @private
+   * @name Main#extractDataForm
+   * @param Object el Dom element
+   * @function
+   */
   var extractDataForm = function (el) {
     var values = {};
     window.$.each(el.find('input, select'), function (i, field) {
@@ -299,24 +299,24 @@
   };
 
   /**
-     * Track submit event
-     *
-     * @private
-     * @name Main#_bindSubmitEvent
-     * @param Object el Dom element
-     * @param Object attrs Object with all attributes to send
-     * @function
-     */
+   * Track submit event
+   *
+   * @private
+   * @name Main#_bindSubmitEvent
+   * @param Object el Dom element
+   * @param Object attrs Object with all attributes to send
+   * @function
+   */
   var _bindSubmitEvent = function (el, attrs) {
     if (el.prop('tagName').toLowerCase() === 'form') {
       window.analytics.trackForm(
-        el,
-        _capitalize(Constants.submitEvent),
-        function () {
-          // jshint ignore:line
-          var values = extractDataForm(el);
-          return window.$.extend({}, attrs, values);
-        }
+          el,
+          _capitalize(Constants.submitEvent),
+          function () {
+            // jshint ignore:line
+            var values = extractDataForm(el);
+            return window.$.extend({}, attrs, values);
+          }
       );
     } else {
       console.error('submit event if only allowed in form tags');
@@ -324,13 +324,13 @@
   };
 
   /**
-     * Bind events to throw tracking
-     *
-     * @private
-     * @name Main#_bindTracking
-     * @param Object el Dom element
-     * @function
-     */
+   * Bind events to throw tracking
+   *
+   * @private
+   * @name Main#_bindTracking
+   * @param Object el Dom element
+   * @function
+   */
   var _bindTracking = function (el) {
     var attrs = _getTrackDataOfElem(el);
     attrs = window.$.extend({}, defaultData, attrs);
@@ -353,15 +353,15 @@
   };
 
   /**
-     * Search dom elements that have tracking data
-     *
-     * @private
-     * @name Main#_searchTrackings
-     * @function
-     */
+   * Search dom elements that have tracking data
+   *
+   * @private
+   * @name Main#_searchTrackings
+   * @function
+   */
   var _searchTrackings = function () {
     var lengthElems,
-      i = null;
+        i = null;
     var elements = window.$('[' + Constants.nameTrackingEventData + ']');
     if (elements && elements.length > 0) {
       lengthElems = elements.length;
@@ -375,11 +375,11 @@
     // Expects a raw URL
     param = param.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regexS = '[\\?&]' + param + '=([^&#]*)',
-      regex = new RegExp(regexS),
-      results = regex.exec(url);
+        regex = new RegExp(regexS),
+        results = regex.exec(url);
     if (
-      results === null ||
-      (results && typeof results[1] !== 'string' && results[1].length)
+        results === null ||
+        (results && typeof results[1] !== 'string' && results[1].length)
     ) {
       return '';
     } else {
@@ -394,9 +394,9 @@
   var _isSEO = function () {
     var url = document.referrer;
     if (
-      contains(url, 'google') ||
-      contains(url, 'bing') ||
-      contains(url, 'yahoo')
+        contains(url, 'google') ||
+        contains(url, 'bing') ||
+        contains(url, 'yahoo')
     ) {
       return true;
     }
@@ -405,12 +405,12 @@
   var _isSocial = function () {
     var url = document.referrer;
     if (
-      contains(url, 'facebook') ||
-      contains(url, 'twitter') ||
-      contains(url, 'plus.google') ||
-      contains(url, 'linkedin') ||
-      contains(url, 'pinterest') ||
-      contains(url, 'instagram')
+        contains(url, 'facebook') ||
+        contains(url, 'twitter') ||
+        contains(url, 'plus.google') ||
+        contains(url, 'linkedin') ||
+        contains(url, 'pinterest') ||
+        contains(url, 'instagram')
     ) {
       return true;
     }
@@ -488,7 +488,7 @@
   var _getParams = function (prefix, params) {
     params[prefix + 'Touch Source'] = _getTouchSource();
     params[prefix + 'Partner'] =
-      Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
+        Cookie.get(Constants.cookieLastPartner) || 'CoverWallet';
     return params;
   };
 
@@ -499,11 +499,11 @@
 
     _unregisterLastParams();
     var campaignKeywords = 'utm_source utm_medium utm_campaign utm_content utm_term'.split(
-      ' '
-    ),
-      kw = '',
-      prefix = 'Last ',
-      params = {};
+        ' '
+        ),
+        kw = '',
+        prefix = 'Last ',
+        params = {};
     var index;
     for (index = 0; index < campaignKeywords.length; ++index) {
       kw = getQueryParam(document.URL, campaignKeywords[index]);
@@ -519,21 +519,21 @@
   };
 
   /**
-     * Save last utm params and referrer
-     *
-     * @private
-     * @name Main#_lastTouchUTMTags
-     * @function
-     */
+   * Save last utm params and referrer
+   *
+   * @private
+   * @name Main#_lastTouchUTMTags
+   * @function
+   */
   var _lastTouchUTMTags = function () {
     var params = {};
     if (!Cookie.get(Constants.cookieFirst)) {
       params = window.$.extend(params, _getFirstParams());
       var subdomains = window.location.host.split('.');
       var cookieDomain =
-        subdomains.length > 2
-          ? subdomains.slice(-2).join('.')
-          : window.location.host;
+          subdomains.length > 2
+              ? subdomains.slice(-2).join('.')
+              : window.location.host;
       Cookie.set(Constants.cookieFirst, true, 365, cookieDomain);
     }
     logger.debug('Obtaining params last');
@@ -574,11 +574,8 @@
   var track = function (event, attrs) {
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
-      var applicationMode =window.config.applicationMode;
-      if(!applicationMode){
-        logger.error('Application mode not found and will not be tracked');
-      }else{
-        objectToSend.applicationMode = applicationMode;
+      if(config.traits.applicationMode){
+        objectToSend.applicationMode = config.traits.applicationMode;
       }
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
@@ -593,41 +590,41 @@
   };
 
   /**
-     * Send page view event
-     *
-     * @private
-     * @name Main#_sendPageViewEvent
-     * @function
-     */
-    var _sendPageViewEvent = function () {
-      logger.debug('Sending page view event');
-      var el = window.$('body');
-      var attrs = _getTrackDataOfElem(el);
-      //saving default data
-      defaultData = attrs;
-      track(Constants.pageViewEvent, attrs);
-    };
+   * Send page view event
+   *
+   * @private
+   * @name Main#_sendPageViewEvent
+   * @function
+   */
+  var _sendPageViewEvent = function () {
+    logger.debug('Sending page view event');
+    var el = window.$('body');
+    var attrs = _getTrackDataOfElem(el);
+    //saving default data
+    defaultData = attrs;
+    track(Constants.pageViewEvent, attrs);
+  };
 
   /**
-     * Post identify Processes
-     *
-     * @private
-     * @name Main#_postInitProcess
-     * @function
-     */
+   * Post identify Processes
+   *
+   * @private
+   * @name Main#_postInitProcess
+   * @function
+   */
   var _postInitProcess = function () {
     logger.debug('Starting Post Init Process');
     try {
       if (
-        config.calcLastAttrs &&
-        (!document.referrer || document.referrer.indexOf(config.domainName) < 0)
+          config.calcLastAttrs &&
+          (!document.referrer || document.referrer.indexOf(config.domainName) < 0)
       ) {
         _lastTouchUTMTags();
       }
 
       if (
-        !config.hasOwnProperty('sendPageView') ||
-        config.sendPageView === true
+          !config.hasOwnProperty('sendPageView') ||
+          config.sendPageView === true
       ) {
         _sendPageViewEvent();
       }
@@ -639,12 +636,12 @@
   };
 
   /**
-     * Start tracking logic
-     *
-     * @private
-     * @name Main#_startTracking
-     * @function
-     */
+   * Start tracking logic
+   *
+   * @private
+   * @name Main#_startTracking
+   * @function
+   */
   var _startTracking = function (initialOptions) {
     if (config.skipInitIdentifying) {
       return;
@@ -654,12 +651,14 @@
     try {
       var userId = null;
       var traits = null;
-
-      if (typeof initialOptions !== 'undefined' && typeof initialOptions.userId !== 'undefined') {
-        userId = initialOptions.userId;
-        traits = initialOptions.traits;
+      if( typeof initialOptions !== 'undefined' ){
+        if (typeof initialOptions.userId !== 'undefined') {
+          userId = initialOptions.userId;
+        }
+        if(typeof initialOptions.traits !== 'undefined'){
+          traits = initialOptions.traits;
+        }
       }
-
       window.analytics.identify(userId, traits, {}, _postInitProcess);
     } catch (e) {
       console.error(e);
@@ -667,12 +666,12 @@
   };
 
   /**
-     * Init function
-     *
-     * @name Main#init
-     * @function
-     * @param {Object} initialOptions
-     */
+   * Init function
+   *
+   * @name Main#init
+   * @function
+   * @param {Object} initialOptions
+   */
   var init = function (initialOptions) {
     config = initialOptions || {};
     var levelLogger = config.levelLogger || 0;
@@ -682,16 +681,16 @@
     }
 
     var env = window.$('body').data('env')
-      ? window.$('body').data('env').toLowerCase()
-      : 'production';
+        ? window.$('body').data('env').toLowerCase()
+        : 'production';
 
     if (!config.hasOwnProperty('domainName') || config.domainName === null) {
       config.domainName = window.location.host.match(/\.?([^.]+)\.[^.]+.?$/)[1];
     }
 
     if (
-      !config.hasOwnProperty('sendPageView') ||
-      config.sendPageView === null
+        !config.hasOwnProperty('sendPageView') ||
+        config.sendPageView === null
     ) {
       config.sendPageView = true;
     }
@@ -716,16 +715,16 @@
   };
 
   /**
-     * Identify a user with a unique ID. All subsequent actions caused by this user will be tied to this unique ID.
-     * https://segment.com/docs/spec/identify/
-     *
-     * @name Main#identify
-     * @param {String} unique_id A string that uniquely identifies a user
-     * @param {Object} traits A dictionary of traits about the user
-     * @param {Object} options A dictionary of options.
-     * @param {Function} callback A function that is executed after a short timeout
-     * @function
-     */
+   * Identify a user with a unique ID. All subsequent actions caused by this user will be tied to this unique ID.
+   * https://segment.com/docs/spec/identify/
+   *
+   * @name Main#identify
+   * @param {String} unique_id A string that uniquely identifies a user
+   * @param {Object} traits A dictionary of traits about the user
+   * @param {Object} options A dictionary of options.
+   * @param {Function} callback A function that is executed after a short timeout
+   * @function
+   */
   var identify = function (uniqueId, traits, options, callback) {
     if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
@@ -734,13 +733,13 @@
   };
 
   /**
-     * Create an alias, which Segment will use to link two distinct_ids going forward
-     * https://segment.com/docs/spec/track/
-     *
-     * @name Main#alias
-     * @param {String} id A unique identifier that you want to use for this user in the future
-     * @function
-     */
+   * Create an alias, which Segment will use to link two distinct_ids going forward
+   * https://segment.com/docs/spec/track/
+   *
+   * @name Main#alias
+   * @param {String} id A unique identifier that you want to use for this user in the future
+   * @function
+   */
   var alias = function (id) {
     if (isTrackingEnabled()) {
       window.analytics.alias(id);
@@ -760,14 +759,14 @@
   };
 
   /**
-     * Time an event by including the time between this call and a later 'track' call for the
-     *  same event in the properties sent with the event.
-     * https://developer.mixpanel.com/docs/javascript-full-api-reference#section-mixpanel-time_event
-     *
-     * @name Main#timeEvent
-     * @param {String} event Name of event
-     * @function
-     */
+   * Time an event by including the time between this call and a later 'track' call for the
+   *  same event in the properties sent with the event.
+   * https://developer.mixpanel.com/docs/javascript-full-api-reference#section-mixpanel-time_event
+   *
+   * @name Main#timeEvent
+   * @param {String} event Name of event
+   * @function
+   */
 
   var timeEvent = function (event) {
     if (isTrackingEnabled() && window.analytics && window.mixpanel && window.mixpanel.time_event) {
