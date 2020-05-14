@@ -575,7 +575,9 @@
   var track = function (event, attrs) {
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
-
+      if(config.traits.applicationMode){
+        objectToSend.applicationMode = config.traits.applicationMode;
+      }
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
       } else {
@@ -651,9 +653,13 @@
       var userId = null;
       var traits = null;
 
-      if (typeof initialOptions !== 'undefined' && typeof initialOptions.userId !== 'undefined') {
-        userId = initialOptions.userId;
-        traits = initialOptions.traits;
+      if (typeof initialOptions !== 'undefined'){
+        if( typeof initialOptions.userId !== 'undefined') {
+          userId = initialOptions.userId;
+        }
+        if( typeof initialOptions.traits !== 'undefined') {
+          traits = initialOptions.traits;
+        }
       }
 
       window.analytics.identify(userId, traits, {}, _postInitProcess);
