@@ -575,9 +575,11 @@
   var track = function (event, attrs) {
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
-      if(config.traits.applicationMode){
+
+      if(config.traits && config.traits.applicationMode){
         objectToSend.applicationMode = config.traits.applicationMode;
       }
+
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
       } else {
