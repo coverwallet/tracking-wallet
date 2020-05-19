@@ -579,7 +579,6 @@
       if(config.traits && config.traits.applicationMode){
         objectToSend.applicationMode = config.traits.applicationMode;
       }
-      console.log(config);
 
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
