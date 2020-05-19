@@ -579,6 +579,7 @@
       if(config.traits && config.traits.applicationMode){
         objectToSend.applicationMode = config.traits.applicationMode;
       }
+      console.log(config);
 
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
@@ -733,7 +734,7 @@
   var identify = function (uniqueId, traits, options, callback) {
     if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
-      window.analytics.identify(uniqueId.toLowerCase(), traits, options, callback);
+      window.analytics.identify(uniqueId ? uniqueId.toLowerCase() : null , traits, options, callback);
     }
   };
 
