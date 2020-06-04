@@ -1,6 +1,6 @@
 {
   "name": "tracking-wallet",
-  "version": "3.5.1",
+  "version": "3.5.4",
   "dependencies": {
     "jquery": "^3.5.1"
   },
