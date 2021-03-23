@@ -1,6 +1,11 @@
 Tracking wallet
 ========================
 
+Migrate from v3 to v4
+--------------
+- Remove calls to `timeEvent` method. The calls can stay but will fall back to an additional track event for the same event name ended in `_TIME_EVENT`
+- Remove all references to `window.mixpanel` from the project
+
 Installation
 --------------
 
