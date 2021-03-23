@@ -2,7 +2,7 @@
   "name": "tracking-wallet",
   "version": "4.0.0",
   "dependencies": {
-    "jquery": "^3.5.1"
+    "jquery": "^3.6.0"
   },
   "engines": {
     "node": ">=0.10.0"
