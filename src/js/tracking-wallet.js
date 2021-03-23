@@ -152,7 +152,6 @@
     cookieFirst: 'CW-FirstTime',
     cookieLastPartner: 'last-partner',
     sendPageView: 'send-page-view',
-    cookieExpiration: 1825, // Time in days = 5 Years
     disabledTrackingCookieName: 'ichbineincover',
     cookieUserRoleKey: 'user-role',
     cookieAgentValue:  'agent',
@@ -716,10 +715,6 @@
       window.analytics.debug();
     }
 
-    analytics.ready(function() {
-      window.mixpanel.set_config({ cookie_expiration: Constants.cookieExpiration });
-    });
-
     if (isTrackingEnabled()) {
       _startTracking(initialOptions);
     }
@@ -758,9 +753,11 @@
   };
 
   var getUserId = function () {
-    if (window.mixpanel && window.mixpanel.get_distinct_id) {
-      return window.mixpanel.get_distinct_id();
+    if (isTrackingEnabled()) {
+      return window.analytics.user().id();
     }
+
+    logger.error('Trying to identify before enabling tracker');
   };
 
   var isTrackingEnabled = function () {
@@ -776,8 +773,7 @@
   };
 
   /**
-     * Time an event by including the time between this call and a later 'track' call for the
-     *  same event in the properties sent with the event.
+     * @deprecated since v4.0.0
      * https://developer.mixpanel.com/docs/javascript-full-api-reference#section-mixpanel-time_event
      *
      * @name Main#timeEvent
@@ -786,10 +782,8 @@
      */
 
   var timeEvent = function (event) {
-    if (isTrackingEnabled() && window.analytics && window.mixpanel && window.mixpanel.time_event) {
-      window.analytics.ready(function() {
-        window.mixpanel.time_event(event);
-      });
+    if (isTrackingEnabled()) {
+      window.analytics.track(event + '_TIME_EVENT');
     }
   }
 

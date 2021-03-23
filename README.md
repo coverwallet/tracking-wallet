@@ -24,7 +24,6 @@ Usage
 --------------
 
 ````javascript
-//depends of mixpanel and jquery
 <script type="text/javascript" src="<path>/build/tracking-wallet.min.js"></script>
 <script type="text/javascript">
     /**
