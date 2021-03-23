@@ -154,6 +154,8 @@
     sendPageView: 'send-page-view',
     cookieExpiration: 1825, // Time in days = 5 Years
     disabledTrackingCookieName: 'ichbineincover',
+    cookieAgentKey: 'user-role',
+    cookieAgentValue:  'agent',
   };
   var defaultData = {};
   var logger = null;
@@ -576,6 +578,10 @@
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
 
+      if (isAgent()) {
+        objectToSend.userRole = Constants.cookieAgentValue;
+      }
+
       if(config.traits && config.traits.applicationMode){
         objectToSend.applicationMode = config.traits.applicationMode;
       }
@@ -731,7 +737,7 @@
      * @function
      */
   var identify = function (uniqueId, traits, options, callback) {
-    if (isTrackingEnabled()) {
+    if (isTrackingEnabled() && !isAgent()) {
       logger.debug('Identifying user with id ' + uniqueId);
       window.analytics.identify(uniqueId.toLowerCase(), traits, options, callback);
     }
@@ -761,6 +767,12 @@
     var cookie = Cookie.get(Constants.disabledTrackingCookieName);
 
     return config.trackAgentsOn || cookie === null || typeof cookie === 'undefined';
+  };
+
+  var isAgent = function () {
+    var cookie = Cookie.get(Constants.cookieAgentKey);
+
+    return cookie === Constants.cookieAgentValue;
   };
 
   /**
