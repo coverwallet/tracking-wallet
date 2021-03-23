@@ -737,7 +737,7 @@
      * @function
      */
   var identify = function (uniqueId, traits, options, callback) {
-    if (isTrackingEnabled() && !isAgent()) {
+    if (isTrackingEnabled()) {
       logger.debug('Identifying user with id ' + uniqueId);
       window.analytics.identify(uniqueId.toLowerCase(), traits, options, callback);
     }
@@ -752,7 +752,7 @@
      * @function
      */
   var alias = function (id) {
-    if (isTrackingEnabled()) {
+    if (isTrackingEnabled() && !isAgent()) {
       window.analytics.alias(id);
     }
   };
