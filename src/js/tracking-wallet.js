@@ -154,7 +154,7 @@
     sendPageView: 'send-page-view',
     cookieExpiration: 1825, // Time in days = 5 Years
     disabledTrackingCookieName: 'ichbineincover',
-    cookieAgentKey: 'user-role',
+    cookieUserRoleKey: 'user-role',
     cookieAgentValue:  'agent',
   };
   var defaultData = {};
@@ -770,7 +770,7 @@
   };
 
   var isAgent = function () {
-    var cookie = Cookie.get(Constants.cookieAgentKey);
+    var cookie = Cookie.get(Constants.cookieUserRoleKey);
 
     return cookie === Constants.cookieAgentValue;
   };
