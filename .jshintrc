@@ -35,7 +35,6 @@
         "Integer": false,
         "module": false,
         "window": false,
-        "jQuery": false,
-        "mixpanel": false
+        "jQuery": false
     }
 }

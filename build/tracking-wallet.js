@@ -152,8 +152,9 @@
     cookieFirst: 'CW-FirstTime',
     cookieLastPartner: 'last-partner',
     sendPageView: 'send-page-view',
-    cookieExpiration: 1825, // Time in days = 5 Years
     disabledTrackingCookieName: 'ichbineincover',
+    cookieUserRoleKey: 'user-role',
+    cookieAgentValue:  'agent',
   };
   var defaultData = {};
   var logger = null;
@@ -576,6 +577,14 @@
     if (isTrackingEnabled()) {
       var objectToSend = window.$.extend({}, defaultData, attrs);
 
+      if (isAgent()) {
+        objectToSend.userRole = Constants.cookieAgentValue;
+      }
+
+      if(config.traits && config.traits.applicationMode){
+        objectToSend.applicationMode = config.traits.applicationMode;
+      }
+
       if (event === Constants.pageViewEvent) {
         trackPageViewEvent(objectToSend);
       } else {
@@ -651,9 +660,13 @@
       var userId = null;
       var traits = null;
 
-      if (typeof initialOptions !== 'undefined' && typeof initialOptions.userId !== 'undefined') {
-        userId = initialOptions.userId;
-        traits = initialOptions.traits;
+      if (typeof initialOptions !== 'undefined'){
+        if( typeof initialOptions.userId !== 'undefined') {
+          userId = initialOptions.userId;
+        }
+        if( typeof initialOptions.traits !== 'undefined') {
+          traits = initialOptions.traits;
+        }
       }
 
       window.analytics.identify(userId, traits, {}, _postInitProcess);
@@ -702,10 +715,6 @@
       window.analytics.debug();
     }
 
-    analytics.ready(function() {
-      window.mixpanel.set_config({ cookie_expiration: Constants.cookieExpiration });
-    });
-
     if (isTrackingEnabled()) {
       _startTracking(initialOptions);
     }
@@ -738,15 +747,17 @@
      * @function
      */
   var alias = function (id) {
-    if (isTrackingEnabled()) {
+    if (isTrackingEnabled() && !isAgent()) {
       window.analytics.alias(id);
     }
   };
 
   var getUserId = function () {
-    if (window.mixpanel && window.mixpanel.get_distinct_id) {
-      return window.mixpanel.get_distinct_id();
+    if (isTrackingEnabled()) {
+      return window.analytics.user().id();
     }
+
+    logger.error('Trying to identify before enabling tracker');
   };
 
   var isTrackingEnabled = function () {
@@ -755,9 +766,14 @@
     return config.trackAgentsOn || cookie === null || typeof cookie === 'undefined';
   };
 
+  var isAgent = function () {
+    var cookie = Cookie.get(Constants.cookieUserRoleKey);
+
+    return cookie === Constants.cookieAgentValue;
+  };
+
   /**
-     * Time an event by including the time between this call and a later 'track' call for the
-     *  same event in the properties sent with the event.
+     * @deprecated since v4.0.0
      * https://developer.mixpanel.com/docs/javascript-full-api-reference#section-mixpanel-time_event
      *
      * @name Main#timeEvent
@@ -766,10 +782,8 @@
      */
 
   var timeEvent = function (event) {
-    if (isTrackingEnabled() && window.analytics && window.mixpanel && window.mixpanel.time_event) {
-      window.analytics.ready(function() {
-        window.mixpanel.time_event(event);
-      });
+    if (isTrackingEnabled()) {
+      window.analytics.track(event + '_TIME_EVENT');
     }
   }
 
