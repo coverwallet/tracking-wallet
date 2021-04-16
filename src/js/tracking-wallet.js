@@ -733,7 +733,7 @@
      */
   var identify = function (uniqueId, traits, options, callback) {
     if (isTrackingEnabled()) {
-      const trackingUniqueId = uniqueId ? uniqueId.toLowerCase() : null;
+      const trackingUniqueId = typeof uniqueId === 'string' ? uniqueId.toLowerCase() : null;
       logger.debug('Identifying user with id ' + trackingUniqueId);
       window.analytics.identify(trackingUniqueId, traits, options, callback);
     }
