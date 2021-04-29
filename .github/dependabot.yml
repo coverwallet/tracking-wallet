@@ -1,0 +1,28 @@
+version: 2
+registries:
+  npm-registry-registry-npmjs-org:
+    type: npm-registry
+    url: https://registry.npmjs.org
+    username: "${{secrets.NPM_REGISTRY_REGISTRY_NPMJS_ORG_USERNAME}}"
+    password: "${{secrets.NPM_REGISTRY_REGISTRY_NPMJS_ORG_PASSWORD}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "02:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: grunt-contrib-uglify
+    versions:
+    - 5.0.0
+  - dependency-name: jasmine-reporters
+    versions:
+    - 2.3.2
+  - dependency-name: grunt-replace
+    versions:
+    - 1.0.1
+  rebase-strategy: disabled
+  registries:
+  - npm-registry-registry-npmjs-org
