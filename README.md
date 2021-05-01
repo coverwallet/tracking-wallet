@@ -1,65 +1,30 @@
 Tracking wallet
 ========================
 
-Migrate from v3 to v4
---------------
-- Remove calls to `timeEvent` method. The calls can stay but will fall back to an additional track event for the same event name ended in `_TIME_EVENT`
-- Remove all references to `window.mixpanel` from the project
+## v4
+`v5` removes `jquery` from the bundle. This may introduce some breaking changes in the projects which still rely on it. Check `v4` git branch for the old version. 
 
-Installation
---------------
+## Usage
+ES6 Module:
+```javascript
+import TrackingWallet from 'tracking-wallet';
 
-Download the repository and execute the installation script:
+const trackingWallet = new TrackingWallet();
+trackingWallet.identify('userId', { /* User traits */ });
+trackingWallet.track({ /* Event */}, { /* Event options */});
+```
+or use the bundled version:
 
-````bash
-
-cd Workspace
-git clone https://github.com/coverwallet/tracking-wallet
-cd tracking-wallet
-npm install
-grunt serve
-
-//compile lib
-grunt dist
-
-
-
-````
-Usage
---------------
-
-````javascript
-<script type="text/javascript" src="<path>/build/tracking-wallet.min.js"></script>
+```html
+<script type="text/javascript" src="<path>/dist/tracking-wallet.min.js"></script>
 <script type="text/javascript">
-    /**
-        Init library. Get level log of data-event attribute in body tag. If data-env is different of production, log is debug
-    */
-    trackingWallet.init();
+    var trackingWallet = new window.TrackingWallet();
+    trackingWallet.identify('userId', { /* User traits */ });
+    trackingWallet.track({ /* Event */}, { /* Event options */});
 </script>
+```
 
+- If `window.analytics` object is not ready before event is sent this event is stored in the queue and gets processed as soon as `window.analytics` is ready.
 
-    <!--
-        You can put attributes 'data-tw-...' that you want, but always it starts with data-tw- and always you must put 'data-tw-event=<click or submit>]' in the element that you want track.
-        - submit: To forms tag
-        - click: Other tags that you want track click event
-
-        The body case is special because when the library init, always send a 'page view' event with the data put in the body tag. In this case is not necessary the data 'data-tw-event'
-    -->
-
-<html>
-    <body data-tw-owner-domain='coverwallet' data-tw-app='test-dev' data-tw-page="testPage" data-tw-section="Home section" data-env="development">
-        <a href="./index.html" data-tw-event="click" data-tw-target="Test page" data-tw-section="header">Test</a>
-        <form action="./index.html" method="GET" data-tw-event="submit" data-tw-name="pedirNombre">
-            <label for="name">Nombre</label>
-            <!-- For send input, is necesary data-tw-event in field -->
-            <input type="text" name="name" id="name" data-tw-event="click" data-tw-name="name">
-            <input type="submit" data-tw-event="click"/>
-        </form>
-        <script type="text/javascript" src="tracking-wallet.js"></script>
-        <script type="text/javascript">
-            window.trackingWallet.init();
-
-        </script>
-    </body>
-</html>
-````
+## Developement
+You don't need to run a separate script to bundle the minified version of the code. It will be done automatically and added to your commit when you make changes in the `src` directory. 

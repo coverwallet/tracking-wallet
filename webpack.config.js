@@ -7,7 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "tracking-wallet.min.js",
     library: {
-      name: "trackingWallet",
+      name: "TrackingWallet",
       type: "umd",
     },
   },
