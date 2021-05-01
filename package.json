@@ -4,6 +4,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint --config .eslintrc.js .",
+    "pre-commit": "npm run lint && npm test && ./scripts/pre-commit.sh",
+    "post-commit": "./scripts/post-commit.sh",
     "build": "webpack --config webpack.config.js"
   },
   "repository": {
@@ -42,8 +44,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm test && ./scripts/pre-commit",
-      "post-commit": "./scripts/post-commit"
+      "pre-commit": "npm run pre-commit",
+      "post-commit": "npm run post-commit"
     }
   },
   "browserslist": [
