@@ -1,6 +1,6 @@
 {
   "name": "tracking-wallet",
-  "version": "5.0.0-rc.0",
+  "version": "5.0.0-rc.1",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/coverwallet/tracking-wallet#readme",
   "dependencies": {
-    "js-cookie": "^2.2.1"
+    "js-cookie": "^2.2.1",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

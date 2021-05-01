@@ -1,4 +1,5 @@
 import { get as getCookie, set as setCookie } from "js-cookie";
+import { get } from "lodash-es";
 
 import pollOnCallback from "../util/pollOnCallback";
 import { isAnalyticsSnippetsLoaded, isGtmLoaded } from "../util/snippetsStatus";
@@ -100,7 +101,7 @@ export default class TrackingWallet {
   }
 
   getAnalyticsUser() {
-    const userGetter = window?.analytics?.user?.() || {};
+    const userGetter = get(window, "analytics.user", () => {})() || {};
     return {
       userId: typeof userGetter.id === "function" ? userGetter.id() : null,
       anonymousId:
