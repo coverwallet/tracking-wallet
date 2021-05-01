@@ -101,7 +101,6 @@ export default class TrackingWallet {
 
   getAnalyticsUser() {
     const userGetter = window?.analytics?.user?.() || {};
-    // const userGetter = get(window, "analytics.user", () => null)() || {};
     return {
       userId: typeof userGetter.id === "function" ? userGetter.id() : null,
       anonymousId:

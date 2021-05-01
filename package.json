@@ -1,11 +1,12 @@
 {
   "name": "tracking-wallet",
+  "version": "5.0.0-rc.0",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint --config .eslintrc.js .",
     "pre-commit": "npm run lint && npm test && ./scripts/pre-commit.sh",
-    "post-commit": "./scripts/post-commit.sh",
+    "post-commit": "npm run build && ./scripts/post-commit.sh",
     "build": "webpack --config webpack.config.js"
   },
   "repository": {
