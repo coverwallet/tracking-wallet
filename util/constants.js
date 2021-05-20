@@ -5,6 +5,8 @@ export const ANALYTICS_SNIPPETS_SUCCESS = "success";
 export const ANALYTICS_SNIPPETS_FAILURE = "failure";
 export const CW_VISITED_BEFORE_COOKIE = "CW-FirstTime";
 export const LAST_PARTNER_COOKIE = "last-partner";
+export const USER_ROLE_KEY_COOKIE = "user-role";
+export const AGENT_VALUE = "agent";
 export const SOCIAL_REFERRERS = [
   "facebook",
   "twitter",
