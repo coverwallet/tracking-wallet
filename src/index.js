@@ -83,7 +83,8 @@ export default class TrackingWallet {
   }
 
   track(event, props = {}) {
-    if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE && !isAgent()) return;
+    if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE && !isAgent())
+      return;
     if (this.snippetsStatus === ANALYTICS_SNIPPETS_PENDING) {
       this.delayedCalls.push(this.track.bind(this, event, props));
       return;
@@ -102,7 +103,7 @@ export default class TrackingWallet {
   }
 
   getAnalyticsUser() {
-    const userGetter = get(window, "analytics.user", () => { })() || {};
+    const userGetter = get(window, "analytics.user", () => {})() || {};
     return {
       userId: typeof userGetter.id === "function" ? userGetter.id() : null,
       anonymousId:
