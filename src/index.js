@@ -83,8 +83,8 @@ export default class TrackingWallet {
   }
 
   track(event, props = {}) {
-    if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE) return;
-    if (this.snippetsStatus === ANALYTICS_SNIPPETS_PENDING && !isAgent()) {
+    if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE && !isAgent()) return;
+    if (this.snippetsStatus === ANALYTICS_SNIPPETS_PENDING) {
       this.delayedCalls.push(this.track.bind(this, event, props));
       return;
     }
