@@ -12,6 +12,7 @@ import {
   ANALYTICS_SNIPPETS_FAILURE,
   CW_VISITED_BEFORE_COOKIE,
 } from "../util/constants";
+import isAgent from "../util/isAgent";
 
 export const DEFAULT_TRACKING_WALLET_CONFIG = {
   checkLastAttrs: true,
@@ -67,7 +68,7 @@ export default class TrackingWallet {
     }
 
     const { userId: existingUserId, anonymousId } = this.getAnalyticsUser();
-    if (!existingUserId || anonymousId === existingUserId) {
+    if ((!existingUserId || anonymousId === existingUserId) && !isAgent()) {
       window.analytics.alias(userId, anonymousId);
     }
   }
@@ -82,7 +83,8 @@ export default class TrackingWallet {
   }
 
   track(event, props = {}) {
-    if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE) return;
+    if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE && !isAgent())
+      return;
     if (this.snippetsStatus === ANALYTICS_SNIPPETS_PENDING) {
       this.delayedCalls.push(this.track.bind(this, event, props));
       return;
