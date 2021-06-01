@@ -1,13 +1,13 @@
 import { get as getCookie } from "js-cookie";
 
-import { getQueryParam, checkReferrer } from "./DOMHelpers";
-import { capitalizeUTM } from "./utmFormat";
+import { getQueryParam, checkReferrer } from "../src/util/DOMHelpers";
+import { capitalizeUTM } from "../src/util/utmFormat";
 import {
   LAST_PARTNER_COOKIE,
   SOCIAL_REFERRERS,
   SEO_REFERRERS,
   CAMPAIGN_KEYWORDS,
-} from "./constants";
+} from "../src/util/constants";
 
 export const getTouchSource = () => {
   const utmMedium = getQueryParam("utm_medium");

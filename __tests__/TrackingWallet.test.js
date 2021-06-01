@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import * as cookie from "js-cookie";
-import * as tw from "../src/index";
-import * as touchTags from "../util/touchTags";
+import * as tw from "../src/index.js";
+import * as touchTags from "./touchTags";
 import {
   ANALYTICS_SNIPPETS_POLL_INTERVAL,
   ANALYTICS_SNIPPETS_POLL_MAX_ATTEMPTS,
@@ -9,7 +9,7 @@ import {
   ANALYTICS_SNIPPETS_SUCCESS,
   ANALYTICS_SNIPPETS_FAILURE,
   CW_VISITED_BEFORE_COOKIE,
-} from "../util/constants";
+} from "../src/util/constants";
 
 let twInstance;
 const TrackingWallet = tw.default;
@@ -345,4 +345,4 @@ jest.mock("js-cookie", () => ({
     set: jest.fn(),
   },
 }));
-jest.mock("../util/touchTags");
+jest.mock("./touchTags");

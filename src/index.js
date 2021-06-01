@@ -1,9 +1,9 @@
 import { get as getCookie, set as setCookie } from "js-cookie";
 import { get } from "lodash-es";
 
-import pollOnCallback from "../util/pollOnCallback";
-import { isAnalyticsSnippetsLoaded, isGtmLoaded } from "../util/snippetsStatus";
-import { getCookieDomain } from "../util/DOMHelpers";
+import pollOnCallback from "./util/pollOnCallback";
+import { isAnalyticsSnippetsLoaded, isGtmLoaded } from "./util/snippetsStatus";
+import { getCookieDomain } from "./util/DOMHelpers";
 import {
   ANALYTICS_SNIPPETS_POLL_INTERVAL,
   ANALYTICS_SNIPPETS_POLL_MAX_ATTEMPTS,
@@ -11,8 +11,8 @@ import {
   ANALYTICS_SNIPPETS_SUCCESS,
   ANALYTICS_SNIPPETS_FAILURE,
   CW_VISITED_BEFORE_COOKIE,
-} from "../util/constants";
-import isAgent from "../util/isAgent";
+} from "./util/constants";
+import isAgent from "./util/isAgent";
 
 export const DEFAULT_TRACKING_WALLET_CONFIG = {
   checkLastAttrs: true,

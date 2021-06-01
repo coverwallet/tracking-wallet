@@ -1,7 +1,7 @@
 {
   "name": "tracking-wallet",
   "version": "5.0.0-rc.1",
-  "main": "src/index.js",
+  "main": "build/tracking-wallet.min.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint --config .eslintrc.js .",
@@ -58,6 +58,8 @@
   "jest": {
     "transform": {
       "\\.[jt]sx?$": "babel-jest"
-    }
+    },
+    "transformIgnorePatterns": ["/node_modules/(?!lodash-es)"],
+    "testMatch": ["**/__tests__/**/*.test.*"]
   }
 }

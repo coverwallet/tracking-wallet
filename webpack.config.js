@@ -4,7 +4,7 @@ module.exports = {
   mode: "production",
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "build"),
     filename: "tracking-wallet.min.js",
     library: {
       name: "TrackingWallet",

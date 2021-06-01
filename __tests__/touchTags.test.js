@@ -1,5 +1,5 @@
-import * as touchTags from "../util/touchTags";
-import * as DOMHelpers from "../util/DOMHelpers";
+import * as touchTags from "./touchTags";
+import * as DOMHelpers from "../src/util/DOMHelpers";
 
 describe("getTouchSource", () => {
   afterEach(() => {
@@ -52,4 +52,6 @@ describe("getTouchSource", () => {
   });
 });
 
-jest.mock("../util/DOMHelpers", () => jest.requireActual("../util/DOMHelpers"));
+jest.mock("../src/util/DOMHelpers", () =>
+  jest.requireActual("../src/util/DOMHelpers")
+);
