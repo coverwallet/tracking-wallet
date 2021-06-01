@@ -1,8 +1,14 @@
 Tracking wallet
 ========================
 
-## v4
-`v5` removes `jquery` from the bundle. This may introduce some breaking changes in the projects which still rely on it. Check `v4` git branch for the old version. 
+## v5
+- removes `jquery` from the bundle. This may introduce some breaking changes in the projects which still rely on it. 
+- suppor for Server Side Rendering (only uses `window` if it's available)
+
+Migrate from v3 to v4
+--------------
+- Remove calls to `timeEvent` method. The calls can stay but will fall back to an additional track event for the same event name ended in `_TIME_EVENT`
+- Remove all references to `window.mixpanel` from the project
 
 ## Usage
 ES6 Module:
