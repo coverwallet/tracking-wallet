@@ -1,5 +1,9 @@
 import "core-js/stable/url-search-params";
 
+export const hasWindow = () => {
+  return typeof window !== "undefined";
+};
+
 export const getCookieDomain = (host) => {
   const subdomains = host.split(".");
   return subdomains.length > 2

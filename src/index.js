@@ -3,7 +3,7 @@ import { get } from "lodash-es";
 
 import pollOnCallback from "./util/pollOnCallback";
 import { isAnalyticsSnippetsLoaded, isGtmLoaded } from "./util/snippetsStatus";
-import { getCookieDomain } from "./util/DOMHelpers";
+import { getCookieDomain, hasWindow } from "./util/DOMHelpers";
 import {
   ANALYTICS_SNIPPETS_POLL_INTERVAL,
   ANALYTICS_SNIPPETS_POLL_MAX_ATTEMPTS,
@@ -30,7 +30,9 @@ export default class TrackingWallet {
     pollOnCallback({
       onSuccess: () => {
         this.snippetsStatus = ANALYTICS_SNIPPETS_SUCCESS;
-        window.analytics.ready(() => this.onAnalyticsReady());
+        if (hasWindow()) {
+          window.analytics.ready(() => this.onAnalyticsReady());
+        }
       },
       onFailure: () => {
         this.snippetsStatus = ANALYTICS_SNIPPETS_FAILURE;
@@ -57,7 +59,9 @@ export default class TrackingWallet {
       return;
     }
     if (!userId) return;
-    window.analytics.identify(userId, userTraits);
+    if (hasWindow()) {
+      window.analytics.identify(userId, userTraits);
+    }
   }
 
   alias(userId) {
@@ -68,7 +72,11 @@ export default class TrackingWallet {
     }
 
     const { userId: existingUserId, anonymousId } = this.getAnalyticsUser();
-    if ((!existingUserId || anonymousId === existingUserId) && !isAgent()) {
+    if (
+      (!existingUserId || anonymousId === existingUserId) &&
+      !isAgent() &&
+      hasWindow()
+    ) {
       window.analytics.alias(userId, anonymousId);
     }
   }
@@ -79,7 +87,9 @@ export default class TrackingWallet {
       this.delayedCalls.push(this.page.bind(this));
       return;
     }
-    window.analytics.page();
+    if (hasWindow()) {
+      window.analytics.page();
+    }
   }
 
   track(event, props = {}) {
@@ -89,7 +99,12 @@ export default class TrackingWallet {
       this.delayedCalls.push(this.track.bind(this, event, props));
       return;
     }
+    if (!hasWindow()) {
+      return;
+    }
+
     window.analytics.track(event, props);
+
     if (isGtmLoaded()) {
       window.dataLayer.push({ event, ...props });
     }
@@ -97,12 +112,19 @@ export default class TrackingWallet {
 
   setFirstTouchUTMTags() {
     if (getCookie(CW_VISITED_BEFORE_COOKIE)) return;
+    if (!hasWindow()) {
+      return;
+    }
 
     const domain = getCookieDomain(window.location.host);
     setCookie(CW_VISITED_BEFORE_COOKIE, true, { expires: 365, domain });
   }
 
   getAnalyticsUser() {
+    if (!hasWindow()) {
+      return {};
+    }
+
     const userGetter = get(window, "analytics.user", () => {})() || {};
     return {
       userId: typeof userGetter.id === "function" ? userGetter.id() : null,
@@ -122,6 +144,8 @@ export default class TrackingWallet {
       this.delayedCalls.push(this.track.bind(this));
       return;
     }
-    window.analytics.user().traits({});
+    if (hasWindow()) {
+      window.analytics.user().traits({});
+    }
   }
 }

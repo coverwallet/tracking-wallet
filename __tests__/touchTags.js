@@ -24,6 +24,10 @@ export const getTouchTags = (prefix) => ({
 });
 
 export const getDefaultLastUTMTags = () => {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
   const params = new URLSearchParams(window.location.search);
   const paramsKeys = Array.from(params.keys());
   return paramsKeys.reduce(

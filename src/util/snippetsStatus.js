@@ -1,5 +1,6 @@
-export const isGtmLoaded = () => !!(window.dataLayer && window.dataLayer.push);
+export const isGtmLoaded = () =>
+  !!(window && window.dataLayer && window.dataLayer.push);
 
 export const isAnalyticsSnippetsLoaded = () => {
-  return !!window.analytics;
+  return !!(window && window.analytics);
 };
