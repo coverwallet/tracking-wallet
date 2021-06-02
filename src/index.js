@@ -11,6 +11,7 @@ import {
   ANALYTICS_SNIPPETS_SUCCESS,
   ANALYTICS_SNIPPETS_FAILURE,
   CW_VISITED_BEFORE_COOKIE,
+  AGENT_VALUE,
 } from "./util/constants";
 import isAgent from "./util/isAgent";
 
@@ -95,18 +96,24 @@ export default class TrackingWallet {
   track(event, props = {}) {
     if (this.snippetsStatus === ANALYTICS_SNIPPETS_FAILURE && !isAgent())
       return;
+
+    const eventProps = { ...props };
+    if (isAgent()) {
+      eventProps.userRole = AGENT_VALUE;
+    }
+
     if (this.snippetsStatus === ANALYTICS_SNIPPETS_PENDING) {
-      this.delayedCalls.push(this.track.bind(this, event, props));
+      this.delayedCalls.push(this.track.bind(this, event, eventProps));
       return;
     }
     if (!hasWindow()) {
       return;
     }
 
-    window.analytics.track(event, props);
+    window.analytics.track(event, eventProps);
 
     if (isGtmLoaded()) {
-      window.dataLayer.push({ event, ...props });
+      window.dataLayer.push({ event, ...eventProps });
     }
   }
 

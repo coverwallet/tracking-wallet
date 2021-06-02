@@ -340,9 +340,7 @@ describe("TrackingWallet", () => {
 jest.useFakeTimers();
 jest.mock("js-cookie", () => ({
   __esModule: true,
-  default: {
-    get: jest.fn(),
-    set: jest.fn(),
-  },
+  get: jest.fn(),
+  set: jest.fn(),
 }));
 jest.mock("./touchTags");

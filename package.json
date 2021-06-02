@@ -1,6 +1,6 @@
 {
   "name": "tracking-wallet",
-  "version": "5.0.0-rc.2",
+  "version": "5.0.0-rc.3",
   "main": "build/tracking-wallet.min.js",
   "scripts": {
     "test": "jest",
