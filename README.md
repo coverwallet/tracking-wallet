@@ -3,7 +3,7 @@ Tracking wallet
 
 ## v5
 - removes `jquery` from the bundle. This may introduce some breaking changes in the projects which still rely on it. 
-- suppor for Server Side Rendering (only uses `window` if it's available)
+- support for Server Side Rendering (only uses `window` if it's available)
 - recovered agent identification functionality from v4
 
 Migrate from v3 to v4
